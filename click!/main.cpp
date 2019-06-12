@@ -1,24 +1,28 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "StateManager.h"
+#include "InitializeState.h"
+#include "UpdateContext.h"
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow window(sf::VideoMode(1440, 900), "click!");
+	sf::Clock clock;
 
-	while (window.isOpen())
+	StateManager stateManager;
+	stateManager.TransitionTo<InitializeState>();
+
+	bool shouldExit = false;
+	while (!shouldExit)
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
+		UpdateContext kContext;
+		kContext.m_pWindow = &window;
+		while (window.isOpen())
 		{
-			if (event.type == sf::Event::Closed)
-				window.close();
+			stateManager.Update(kContext);
+			window.clear();
+			window.display();
 		}
-
-		window.clear();
-		window.draw(shape);
-		window.display();
 	}
 
 	system("pause"); 
