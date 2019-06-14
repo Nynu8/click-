@@ -1,27 +1,27 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "StateManager.h"
-#include "InitializeState.h"
+#include "GameState.h"
 #include "UpdateContext.h"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1440, 900), "click!");
 	sf::Clock clock;
-
+	
 	StateManager stateManager;
-	stateManager.TransitionTo<InitializeState>();
+	stateManager.TransitionTo<GameState>();
+	UpdateContext kContext;
+	kContext.m_pWindow = &window;
 
 	bool shouldExit = false;
 	while (!shouldExit)
-	{
-		UpdateContext kContext;
-		kContext.m_pWindow = &window;
+	{	
+		kContext.m_DeltaTime = clock.getElapsedTime().asSeconds();
+		clock.restart();
 		while (window.isOpen())
 		{
 			stateManager.Update(kContext);
-			window.clear();
-			window.display();
 		}
 	}
 
