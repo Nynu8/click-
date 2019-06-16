@@ -51,4 +51,20 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\apple.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\apple_tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\arial.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="assets\HandVetica.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+  </ItemGroup>
 </Project>

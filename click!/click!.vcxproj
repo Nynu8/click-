@@ -136,6 +136,14 @@
     <ClInclude Include="UpdateContext.h" />
     <ClInclude Include="Upgrade.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\apple.png" />
+    <Image Include="assets\apple_tree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\arial.TTF" />
+    <Font Include="assets\HandVetica.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
