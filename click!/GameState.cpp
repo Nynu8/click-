@@ -9,41 +9,48 @@ GameState::GameState(StateManager * stateManager)
 	m_pStateManager = stateManager;
 	m_pApple = new Apple();
 	m_pResourceManager = new ResourceManager();
+
+	//make a tree
+	sf::Sprite appleTextureSprite;
+	sf::Vector2u windowSize(1000, 800);
+	const sf::Texture *appleTextureTree = m_pResourceManager->getTexture("appleTree");
+	appleTextureSprite.setTexture(*appleTextureTree);
+	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().x) / 2);
+	this->appleTreeSprite = appleTextureSprite;
 }
 
 void GameState::Update(UpdateContext updateContext)
 {
-	updateContext.m_pWindow->create(sf::VideoMode(1000, 800), "Click!");
-	sf::RenderWindow* Window = updateContext.m_pWindow;
-	sf::Vector2u sizeWindow = Window->getSize();
 	sf::Event event;
-	while (updateContext.m_pWindow->isOpen()) 
+	while (updateContext.m_pWindow->pollEvent(event))
 	{
-		while (updateContext.m_pWindow->pollEvent(event))
+		if (event.type == sf::Event::Closed)
+			updateContext.m_pWindow->close();
+
+		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			if (event.type == sf::Event::Closed)
-				updateContext.m_pWindow->close();
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
+					this->m_pApple->addApples(1);
+				}
+			}
 		}
-		//std::cout << updateContext.m_DeltaTime << std::endl;
-		drawAll(Window);
 	}
+	//std::cout << updateContext.m_DeltaTime << std::endl;
+	drawAll(updateContext.m_pWindow);
 }
 
-void GameState::drawAppleTree(sf::Vector2u size, sf::RenderWindow* window)
+void GameState::drawAppleTree(sf::RenderWindow* window)
 {
-	sf::Sprite appleTsprite;
-	sf::Texture appleTtree = m_pResourceManager->getTexture("appleTree");
-	appleTsprite.setTexture(appleTtree);
-	appleTsprite.setPosition((size.x - appleTtree.getSize().x) / 2, (size.y - appleTtree.getSize().x) / 2);
-	window->draw(appleTsprite);
-
+	window->draw(this->appleTreeSprite);
 }
 
 void GameState::drawCookieAmount(sf::Vector2u size, sf::RenderWindow* window, unsigned long long points)
 {
 	sf::Text textPoints;
-	sf::Font font = m_pResourceManager->getFont("HandVetica");
-	textPoints.setFont(font); 
+	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
+	textPoints.setFont(*font); 
 	textPoints.setCharacterSize(60);
 	textPoints.setFillColor(sf::Color::White);
 	textPoints.setStyle(sf::Text::Bold);
@@ -56,12 +63,12 @@ void GameState::drawCookieAmount(sf::Vector2u size, sf::RenderWindow* window, un
 	window->draw(textPoints);
 }
 
-void GameState::drawAll(sf::RenderWindow * window)
+void GameState::drawAll(sf::RenderWindow* window)
 {
 	sf::Vector2u windowSize = window->getSize();
 	window->clear();
-	drawAppleTree(windowSize, window);
-	drawCookieAmount(windowSize, window, 121221);
+	drawAppleTree(window);
+	drawCookieAmount(windowSize, window, this->m_pApple->getAppleCount());
 	window->display();
 }
 
@@ -70,5 +77,6 @@ bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
 		//std::cout << "Button Hover" << std::endl;
 		return true;
 	}
+
 	return false;
 }
