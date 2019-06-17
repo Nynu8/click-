@@ -17,12 +17,15 @@ GameState::GameState(StateManager * stateManager)
 
 	makeAppleTree(windowSize);
 	makeCookieAmount(windowSize);
-	makeImprovements(windowSize);
+	makeUpgrades(windowSize);
+
+	upgradePosition1 = first.getPosition();
+	upgradePosition2 = second.getPosition();
+	upgradePosition3 = third.getPosition();
 }
 
 void GameState::Update(UpdateContext updateContext)
-{/*
-	updateContext.m_pWindow->draw(background);*/
+{
 	sf::Event event;
 	while (updateContext.m_pWindow->pollEvent(event))
 	{
@@ -41,7 +44,7 @@ void GameState::Update(UpdateContext updateContext)
 	}
 	//std::cout << updateContext.m_DeltaTime << std::endl;
 	hoverAppleTree(updateContext);
-	hoverImpro(updateContext);
+	hoverUpgrade(updateContext, upgradePosition1, upgradePosition2, upgradePosition3);
 	drawAll(updateContext.m_pWindow);
 }
 
@@ -63,23 +66,23 @@ void GameState::makeCookieAmount(sf::Vector2u)
 	textPoints.setStyle(sf::Text::Bold);
 }
 
-void GameState::makeImprovements(sf::Vector2u windowSize)
+void GameState::makeUpgrades(sf::Vector2u windowSize)
 {
-	sf::Sprite improTextureSprite;
-	const sf::Texture *improTexture = m_pResourceManager->getTexture("first");
-	improTextureSprite.setTexture(*improTexture);
-	improTextureSprite.setPosition((windowSize.x - improTexture->getSize().x-10), (windowSize.y - 5*improTexture->getSize().y-10));
-	this-> first = improTextureSprite;
+	sf::Sprite upgradeTextureSprite;
+	const sf::Texture *upgradeTexture = m_pResourceManager->getTexture("first");
+	upgradeTextureSprite.setTexture(*upgradeTexture);
+	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 5.5* upgradeTexture->getSize().y-10));
+	this-> first = upgradeTextureSprite;
 
-	improTexture = m_pResourceManager->getTexture("second");
-	improTextureSprite.setTexture(*improTexture);
-	improTextureSprite.setPosition((windowSize.x - improTexture->getSize().x-10), (windowSize.y - 4*improTexture->getSize().y-5));
-	this->second = improTextureSprite;
+	upgradeTexture = m_pResourceManager->getTexture("second");
+	upgradeTextureSprite.setTexture(*upgradeTexture);
+	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 4* upgradeTexture->getSize().y-5));
+	this->second = upgradeTextureSprite;
 
-	improTexture = m_pResourceManager->getTexture("third");
-	improTextureSprite.setTexture(*improTexture);
-	improTextureSprite.setPosition((windowSize.x - improTexture->getSize().x-10), (windowSize.y - 3*improTexture->getSize().y));
-	this->third = improTextureSprite;
+	upgradeTexture = m_pResourceManager->getTexture("third");
+	upgradeTextureSprite.setTexture(*upgradeTexture);
+	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 2.5* upgradeTexture->getSize().y));
+	this->third = upgradeTextureSprite;
 }
 
 void GameState::drawAppleTree(sf::RenderWindow* window)
@@ -95,37 +98,12 @@ void GameState::hoverAppleTree(UpdateContext updateContext)
 		this->appleTreeSprite.setColor(sf::Color(255, 255, 255, 255));
 }
 
-void GameState::hoverImpro(UpdateContext updateContext)
-{
-
-	sf::Vector2u windowSize(1200, 800);
-	sf::Vector2f textureSize(311,109); // i do not like this
-	if (isSpriteHover(this->first, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
-		this->first.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
-		this->first.setPosition((windowSize.x - textureSize.x - 10)+8, (windowSize.y - 5 * textureSize.y-10)+8);
-	}
-	else if (isSpriteHover(this->second, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
-		this->second.setColor(sf::Color(255, 255, 128, 160));
-		this->second.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
-		this->second.setPosition((windowSize.x - textureSize.x - 10) + 8, (windowSize.y - 4 * textureSize.y-5) + 8);
-	}
-	else if (isSpriteHover(this->third, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
-		this->third.setColor(sf::Color(255, 255, 128, 160));
-		this->third.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
-		this->third.setPosition((windowSize.x - textureSize.x - 10) + 8, (windowSize.y - 3 * textureSize.y) + 8);
-	}
-	else
-	{
-		this->first.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-		this->second.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-		this->third.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-		this->first.setPosition((windowSize.x - textureSize.x - 10), (windowSize.y - 5 * textureSize.y)-10);
-		this->second.setColor(sf::Color(255, 255, 255, 255));
-		this->second.setPosition((windowSize.x - textureSize.x - 10), (windowSize.y - 4 * textureSize.y)-5);
-		this->third.setColor(sf::Color(255, 255, 255, 255));
-		this->third.setPosition((windowSize.x - textureSize.x - 10), (windowSize.y - 3 * textureSize.y));
-	}
-
+void GameState::hoverUpgrade(UpdateContext updateContext, sf::Vector2f upgradePosition1, sf::Vector2f upgradePosition2, sf::Vector2f upgradePosition3)
+{	
+	sf::Vector2i mouse = sf::Mouse::getPosition(*updateContext.m_pWindow);
+	(isSpriteHover(this->first, mouse)) ? activeUpgrade(this->first, upgradePosition1) : unactiveUpgrade(this->first, upgradePosition1);
+	(isSpriteHover(this->second, mouse)) ? activeUpgrade(this->second,upgradePosition2) : unactiveUpgrade(this->second, upgradePosition2);
+	isSpriteHover(this->third, mouse) ? activeUpgrade(this->third, upgradePosition3) : unactiveUpgrade(this->third, upgradePosition3);
 }
 
 void GameState::drawCookieAmount(sf::Vector2u size, sf::RenderWindow* window, unsigned long long points)
@@ -157,4 +135,22 @@ bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
 	}
 
 	return false;
+}
+
+void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
+{
+	sf::Vector2u windowSize(1200, 800);
+	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
+	upgrade.setColor(sf::Color(255, 255, 128, 160));
+	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
+	upgrade.setPosition(texturePosition.x + 8, texturePosition.y + 8);
+}
+
+void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
+{
+	sf::Vector2u windowSize(1200, 800);
+	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
+	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
+	upgrade.setPosition(texturePosition.x - 8, texturePosition.y - 8);
+	upgrade.setColor(sf::Color(255, 255, 255, 255));
 }
