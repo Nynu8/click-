@@ -58,7 +58,16 @@
     <Image Include="assets\apple_tree.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\hover_apple_tree.png">
+    <Image Include="assets\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\click.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\second.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\third.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

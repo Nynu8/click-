@@ -16,9 +16,22 @@ ResourceManager::ResourceManager()
 	if (appleTtexture->loadFromFile("./assets/apple_tree.png"))
 		m_textures["appleTree"] = appleTtexture;
 
-	sf::Texture* hoverAppleTtexture = new sf::Texture();
-	if (hoverAppleTtexture->loadFromFile("./assets/hover_apple_tree.png"))
-		m_textures["hoverAppleTree"] = hoverAppleTtexture;
+	sf::Texture* first = new sf::Texture();
+	if (first->loadFromFile("./assets/click.png"))
+		m_textures["first"] = first;
+
+	sf::Texture* second = new sf::Texture();
+	if (second->loadFromFile("./assets/second.png"))
+		m_textures["second"] = second;
+
+	sf::Texture* third = new sf::Texture();
+	if (third->loadFromFile("./assets/third.png"))
+		m_textures["third"] = third;
+
+	sf::Texture* background = new sf::Texture();
+	if (background->loadFromFile("./assets/wood.jpg"))
+		m_textures["wood"] = background;
+	m_textures["wood"]->setRepeated(true);
 /*
 	sf::Sprite appleTsprite; 
 	appleTsprite.setTexture(appleTtexture);*/
