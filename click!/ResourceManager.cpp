@@ -15,6 +15,10 @@ ResourceManager::ResourceManager()
 	sf::Texture* appleTtexture = new sf::Texture();
 	if (appleTtexture->loadFromFile("./assets/apple_tree.png"))
 		m_textures["appleTree"] = appleTtexture;
+
+	sf::Texture* hoverAppleTtexture = new sf::Texture();
+	if (hoverAppleTtexture->loadFromFile("./assets/hover_apple_tree.png"))
+		m_textures["hoverAppleTree"] = hoverAppleTtexture;
 /*
 	sf::Sprite appleTsprite; 
 	appleTsprite.setTexture(appleTtexture);*/

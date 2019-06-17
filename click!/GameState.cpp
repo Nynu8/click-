@@ -9,14 +9,9 @@ GameState::GameState(StateManager * stateManager)
 	m_pStateManager = stateManager;
 	m_pApple = new Apple();
 	m_pResourceManager = new ResourceManager();
-
-	//make a tree
-	sf::Sprite appleTextureSprite;
 	sf::Vector2u windowSize(1000, 800);
-	const sf::Texture *appleTextureTree = m_pResourceManager->getTexture("appleTree");
-	appleTextureSprite.setTexture(*appleTextureTree);
-	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().x) / 2);
-	this->appleTreeSprite = appleTextureSprite;
+	makeAppleTree(windowSize);
+	makeCookieAmount(windowSize);
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -38,7 +33,26 @@ void GameState::Update(UpdateContext updateContext)
 		}
 	}
 	//std::cout << updateContext.m_DeltaTime << std::endl;
+	hoverAppleTree(updateContext);
 	drawAll(updateContext.m_pWindow);
+}
+
+void GameState::makeAppleTree(sf::Vector2u windowSize)
+{
+	sf::Sprite appleTextureSprite;
+	const sf::Texture *appleTextureTree = m_pResourceManager->getTexture("appleTree");
+	appleTextureSprite.setTexture(*appleTextureTree);
+	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().x) / 2);
+	this->appleTreeSprite = appleTextureSprite;
+}
+
+void GameState::makeCookieAmount(sf::Vector2u)
+{
+	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
+	textPoints.setFont(*font);
+	textPoints.setCharacterSize(60);
+	textPoints.setFillColor(sf::Color::White);
+	textPoints.setStyle(sf::Text::Bold);
 }
 
 void GameState::drawAppleTree(sf::RenderWindow* window)
@@ -46,17 +60,17 @@ void GameState::drawAppleTree(sf::RenderWindow* window)
 	window->draw(this->appleTreeSprite);
 }
 
+void GameState::hoverAppleTree(UpdateContext updateContext)
+{
+	if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow)))
+		this->appleTreeSprite.setColor(sf::Color(255, 255, 128, 160));
+	else
+		this->appleTreeSprite.setColor(sf::Color(255, 255, 255, 255));
+}
+
 void GameState::drawCookieAmount(sf::Vector2u size, sf::RenderWindow* window, unsigned long long points)
 {
-	sf::Text textPoints;
-	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
-	textPoints.setFont(*font); 
-	textPoints.setCharacterSize(60);
-	textPoints.setFillColor(sf::Color::White);
-	textPoints.setStyle(sf::Text::Bold);
-
 	textPoints.setString(std::to_string(points));
-	
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
 	textPoints.setPosition((size.x - charactersSize) / 2, size.y / 10);
 

@@ -139,6 +139,7 @@
   <ItemGroup>
     <Image Include="assets\apple.png" />
     <Image Include="assets\apple_tree.png" />
+    <Image Include="assets\hover_apple_tree.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\arial.TTF" />

@@ -6,7 +6,7 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1000, 800), "Click!");
+	sf::RenderWindow window(sf::VideoMode(1000, 800), "Click!", sf::Style::Close);
 	sf::Clock clock;
 	
 	StateManager stateManager;

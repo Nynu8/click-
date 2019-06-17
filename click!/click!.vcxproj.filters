@@ -58,6 +58,9 @@
     <Image Include="assets\apple_tree.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\hover_apple_tree.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\arial.TTF">
