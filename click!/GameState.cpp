@@ -17,6 +17,11 @@ GameState::GameState(StateManager * stateManager)
 	appleTextureSprite.setTexture(*appleTextureTree);
 	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().x) / 2);
 	this->appleTreeSprite = appleTextureSprite;
+
+	std::string xd = "temp";
+	Upgrade tmp(xd, 0.1, 1);
+	tmp.addUpgradeLevel(1);
+	m_pApple->addUpgrade(tmp);
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -36,6 +41,13 @@ void GameState::Update(UpdateContext updateContext)
 				}
 			}
 		}
+	}
+
+	applesToAdd += updateContext.m_DeltaTime * m_pApple->getApplesPerSecond();
+	if (applesToAdd > 1) {
+		int tmpApples = (int)applesToAdd;
+		applesToAdd -= tmpApples;
+		m_pApple->addApples(tmpApples);
 	}
 	//std::cout << updateContext.m_DeltaTime << std::endl;
 	drawAll(updateContext.m_pWindow);

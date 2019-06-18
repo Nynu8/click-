@@ -22,4 +22,5 @@ private:
 	ResourceManager* m_pResourceManager;
 	std::vector<Upgrade> m_upgrades;
 	sf::Sprite appleTreeSprite;
+	float applesToAdd = 0;
 };

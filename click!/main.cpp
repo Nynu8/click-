@@ -7,6 +7,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1000, 800), "Click!");
+	window.setVerticalSyncEnabled(true);
 	sf::Clock clock;
 	
 	StateManager stateManager;
@@ -14,15 +15,11 @@ int main()
 	UpdateContext kContext;
 	kContext.m_pWindow = &window;
 
-	bool shouldExit = false;
-	while (!shouldExit)
-	{	
+	while (window.isOpen())
+	{
 		kContext.m_DeltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
-		while (window.isOpen())
-		{
-			stateManager.Update(kContext);
-		}
+		stateManager.Update(kContext);
 	}
 
 	system("pause"); 

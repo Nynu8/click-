@@ -5,19 +5,18 @@
 class Apple
 {
 public:
-	Apple();
-	void addApples(unsigned long long);
-	unsigned long long getAppleCount();
-	unsigned long long getApplesPerSecond(); 
-	void click();
+	void addApples(uint64_t);
+	void addUpgrade(Upgrade);
+	uint64_t getAppleCount() const;
+	uint64_t getApplesPerSecond() const;
 
 private:
-	unsigned long long m_appleCount = 0;
-	unsigned long long m_currentApplesPerSecond = 0;
-	std::vector<Upgrade> *m_pUpgrades;
-	unsigned long long calculateApplesPerSecond();
+	uint64_t m_appleCount = 0;
+	uint64_t m_currentApplesPerSecond = 0;
+	std::vector<Upgrade> m_pUpgrades;
+	void calculateApplesPerSecond();
 };
 
-inline void Apple::addApples(unsigned long long x) { this->m_appleCount += x; }
-inline unsigned long long Apple::getAppleCount() { return this->m_appleCount; }
-inline unsigned long long Apple::getApplesPerSecond() { return this->m_currentApplesPerSecond; }
+inline void Apple::addApples(uint64_t x) { this->m_appleCount += x; }
+inline uint64_t Apple::getAppleCount() const { return this->m_appleCount; }
+inline uint64_t Apple::getApplesPerSecond() const { return this->m_currentApplesPerSecond; }
