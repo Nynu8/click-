@@ -4,6 +4,9 @@
 #include "Apple.h"
 #include "ResourceManager.h"
 
+constexpr int height = 800;
+constexpr int width = 1200;
+
 class GameState : public State
 {
 public:
@@ -17,14 +20,13 @@ public:
 	void makeUpgrades(sf::Vector2u);
 	void makeInstruction(sf::Vector2u);
 
-	void drawAppleTree(sf::RenderWindow*);
-	void drawCookieAmount(sf::Vector2u, sf::RenderWindow* , unsigned long long);
-	void drawAll(sf::RenderWindow* window);
+	void drawCookieAmount(sf::RenderWindow* , unsigned long long);
+	void drawAll(sf::RenderWindow*);
 
-	void hoverAppleTree(UpdateContext updateContext);
-	void hoverUpgrade(UpdateContext updateContext);
-	void onclickUpgrade(UpdateContext updateContext, sf::Vector2f, sf::Vector2f, sf::Vector2f);
-	bool isSpriteHover(sf::Sprite rect, sf::Vector2i mouse);
+	void hoverAppleTree(UpdateContext);
+	void hoverUpgrade(UpdateContext);
+	void onclickUpgrade(UpdateContext , sf::Vector2f, sf::Vector2f, sf::Vector2f);
+	bool isSpriteHover(sf::Sprite, sf::Vector2i);
 	void activeUpgrade(sf::Sprite&, sf::Vector2f);
 	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
 
@@ -51,4 +53,6 @@ private:
 	//Upgrades
 	sf::Text textPoints;
 	sf::Text instruction;
+
+	sf::Image icon;
 };

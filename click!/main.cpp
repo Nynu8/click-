@@ -7,6 +7,10 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1200, 800), "Click!", sf::Style::Close);
+	sf::Image icon;
+	icon.loadFromFile("./assets/icon.png");
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 	sf::Clock clock;
 	
 	StateManager stateManager;

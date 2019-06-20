@@ -9,7 +9,8 @@ GameState::GameState(StateManager * stateManager)
 	m_pStateManager = stateManager;
 	m_pApple = new Apple();
 	m_pResourceManager = new ResourceManager();
-	sf::Vector2u windowSize(1200, 800);
+	
+	sf::Vector2u windowSize(width, height);
 
 	const sf::Texture *backgroundTexture = m_pResourceManager->getTexture("wood");
 	background.setTexture(*backgroundTexture);
@@ -68,7 +69,7 @@ void GameState::makeAppleTree(sf::Vector2u windowSize)
 	sf::Sprite appleTextureSprite;
 	const sf::Texture *appleTextureTree = m_pResourceManager->getTexture("appleTree");
 	appleTextureSprite.setTexture(*appleTextureTree);
-	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().x) / 2);
+	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().y) / 2);
 	this->appleTreeSprite = appleTextureSprite;
 }
 
@@ -109,14 +110,9 @@ void GameState::makeInstruction(sf::Vector2u windowSize)
 	instruction.setCharacterSize(30);
 	instruction.setStyle(sf::Text::Bold);
 
-	instruction.setString("Klikaj na drzewo, aby uzyskac punkty \nza które mozesz kupiæ ulepszenia \naby miec jeszcze wiecej punktów");
+	instruction.setString("Klikaj na drzewo aby zerwac z niego jablka. \nZa zerwane jablka kupuj ulepszenia");
 	instruction.setPosition(10, windowSize.y-120);
 	instruction.setFillColor(sf::Color(255, 255, 255, 160));
-}
-
-void GameState::drawAppleTree(sf::RenderWindow* window)
-{
-	window->draw(this->appleTreeSprite);
 }
 
 void GameState::hoverAppleTree(UpdateContext updateContext)
@@ -145,27 +141,27 @@ void GameState::onclickUpgrade(UpdateContext updateContext, sf::Vector2f upgrade
 	(isSpriteHover(this->third, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->third, upgradePosition3) : unactiveUpgrade(this->third, upgradePosition3);
 }
 
-void GameState::drawCookieAmount(sf::Vector2u size, sf::RenderWindow* window, unsigned long long points)
+void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long points)
 {
 	textPoints.setString(std::to_string(points));
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
-	textPoints.setPosition((size.x - charactersSize) / 2, size.y / 10);
+	textPoints.setPosition((window->getSize().x - charactersSize) / 2, window->getSize().y / 10);
 
 	window->draw(textPoints);
 }
 
 void GameState::drawAll(sf::RenderWindow* window)
 {
-	sf::Vector2u windowSize = window->getSize();
 	window->clear();
 	window->draw(background);
 	window->draw(logo);
-	drawAppleTree(window);
-	drawCookieAmount(windowSize, window, this->m_pApple->getAppleCount());
+	window->draw(appleTreeSprite);
+	drawCookieAmount(window, this->m_pApple->getAppleCount());
 	window->draw(first);
 	window->draw(second);
 	window->draw(third);
-	window->draw(instruction);
+	if(this->m_pApple->getAppleCount()<5) 
+		window->draw(instruction);
 	window->display();
 }
 
@@ -180,7 +176,6 @@ bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
 
 void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
 {
-	sf::Vector2u windowSize(1200, 800);
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
 	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
 	upgrade.setPosition(texturePosition.x + 6, texturePosition.y + 6);
@@ -188,7 +183,6 @@ void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
 
 void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
 {
-	sf::Vector2u windowSize(1200, 800);
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
 	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 	upgrade.setPosition(texturePosition.x - 6, texturePosition.y - 6);
