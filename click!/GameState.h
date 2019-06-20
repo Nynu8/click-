@@ -19,8 +19,11 @@ public:
 	void makeCookieAmount(sf::Vector2u);
 	void makeUpgrades(sf::Vector2u);
 	void makeInstruction(sf::Vector2u);
+	void makeTextUpgrades(sf::Vector2u, sf::Text&);
+
 
 	void drawCookieAmount(sf::RenderWindow* , unsigned long long);
+	void drawUpgradesAmount(sf::RenderWindow*);
 	void drawAll(sf::RenderWindow*);
 
 	void hoverAppleTree(UpdateContext);
@@ -53,6 +56,9 @@ private:
 	//Upgrades
 	sf::Text textPoints;
 	sf::Text instruction;
+	sf::Text upgrade1;
+	sf::Text upgrade2;
+	sf::Text upgrade3;
 
 	sf::Image icon;
 };

@@ -21,6 +21,9 @@ GameState::GameState(StateManager * stateManager)
 	makeCookieAmount(windowSize);
 	makeUpgrades(windowSize);
 	makeInstruction(windowSize);
+	makeTextUpgrades(windowSize, upgrade1);
+	makeTextUpgrades(windowSize, upgrade2);
+	makeTextUpgrades(windowSize, upgrade3);
 
 	upgradePosition1 = first.getPosition();
 	upgradePosition2 = second.getPosition();
@@ -115,6 +118,68 @@ void GameState::makeInstruction(sf::Vector2u windowSize)
 	instruction.setFillColor(sf::Color(255, 255, 255, 160));
 }
 
+void GameState::makeTextUpgrades(sf::Vector2u windowSize, sf::Text& upgrade)
+{
+	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
+	upgrade.setFont(*font);
+	upgrade.setCharacterSize(50);
+	upgrade.setStyle(sf::Text::Bold);
+	upgrade.setFillColor(sf::Color(255, 255, 255, 255));
+	upgrade.setOutlineColor(sf::Color(226, 91, 48, 160));
+	upgrade.setOutlineThickness(5);
+}
+
+
+void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long points)
+{
+	textPoints.setString(std::to_string(points));
+	unsigned int charactersSize = textPoints.getLocalBounds().width;
+	textPoints.setPosition((window->getSize().x - charactersSize) / 2, window->getSize().y / 10);
+
+	window->draw(textPoints);
+}
+
+void GameState::drawUpgradesAmount(sf::RenderWindow *window)
+{
+	upgrade1.setString("1");
+	upgrade2.setString("1");
+	upgrade3.setString("1");
+	
+	unsigned int charactersSize = textPoints.getLocalBounds().width;
+	//+250 - characterSize* amount 
+	upgrade1.setPosition(first.getPosition().x + 250, first.getPosition().y + 10);
+	upgrade2.setPosition(second.getPosition().x + 250, second.getPosition().y + 10);
+	upgrade3.setPosition(third.getPosition().x + 250, third.getPosition().y + 10);
+	window->draw(upgrade1);
+	window->draw(upgrade2);
+	window->draw(upgrade3);
+}
+
+void GameState::drawAll(sf::RenderWindow* window)
+{
+	window->clear();
+	window->draw(background);
+	window->draw(logo);
+	window->draw(appleTreeSprite);
+	drawCookieAmount(window, this->m_pApple->getAppleCount());
+	window->draw(first);
+	window->draw(second);
+	window->draw(third);
+	if(this->m_pApple->getAppleCount()<5) 
+		window->draw(instruction);
+	drawUpgradesAmount(window);
+	window->display();
+}
+
+bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
+	if (rect.getGlobalBounds().contains(mouse.x, mouse.y)) {
+		//std::cout << "Button Hover" << std::endl;
+		return true;
+	}
+
+	return false;
+}
+
 void GameState::hoverAppleTree(UpdateContext updateContext)
 {
 	if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow)))
@@ -137,41 +202,8 @@ void GameState::onclickUpgrade(UpdateContext updateContext, sf::Vector2f upgrade
 	sf::Vector2i mouse = sf::Mouse::getPosition(*updateContext.m_pWindow);
 
 	(isSpriteHover(this->first, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->first, upgradePosition1) : unactiveUpgrade(this->first, upgradePosition1);
-	(isSpriteHover(this->second, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->second,upgradePosition2) : unactiveUpgrade(this->second, upgradePosition2);
+	(isSpriteHover(this->second, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->second, upgradePosition2) : unactiveUpgrade(this->second, upgradePosition2);
 	(isSpriteHover(this->third, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->third, upgradePosition3) : unactiveUpgrade(this->third, upgradePosition3);
-}
-
-void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long points)
-{
-	textPoints.setString(std::to_string(points));
-	unsigned int charactersSize = textPoints.getLocalBounds().width;
-	textPoints.setPosition((window->getSize().x - charactersSize) / 2, window->getSize().y / 10);
-
-	window->draw(textPoints);
-}
-
-void GameState::drawAll(sf::RenderWindow* window)
-{
-	window->clear();
-	window->draw(background);
-	window->draw(logo);
-	window->draw(appleTreeSprite);
-	drawCookieAmount(window, this->m_pApple->getAppleCount());
-	window->draw(first);
-	window->draw(second);
-	window->draw(third);
-	if(this->m_pApple->getAppleCount()<5) 
-		window->draw(instruction);
-	window->display();
-}
-
-bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
-	if (rect.getGlobalBounds().contains(mouse.x, mouse.y)) {
-		//std::cout << "Button Hover" << std::endl;
-		return true;
-	}
-
-	return false;
 }
 
 void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
