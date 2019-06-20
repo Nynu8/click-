@@ -61,16 +61,16 @@
     <Image Include="assets\wood.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\click.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\second.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\third.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="assets\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade3.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

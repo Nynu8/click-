@@ -21,13 +21,20 @@ GameState::GameState(StateManager * stateManager)
 	makeCookieAmount(windowSize);
 	makeUpgrades(windowSize);
 	makeInstruction(windowSize);
-	makeTextUpgrades(windowSize, upgrade1);
-	makeTextUpgrades(windowSize, upgrade2);
-	makeTextUpgrades(windowSize, upgrade3);
+	makeTextUpgrades(windowSize, upgrade1Text);
+	makeTextUpgrades(windowSize, upgrade2Text);
+	makeTextUpgrades(windowSize, upgrade3Text);
+	makeUpgradesName(upgrade1Name);
+	makeUpgradesName(upgrade2Name);
+	makeUpgradesName(upgrade3Name);
+	setUpgradesName();
+	makeUpgradesName(upgrade1Cost);
+	makeUpgradesName(upgrade2Cost);
+	makeUpgradesName(upgrade3Cost);
 
-	upgradePosition1 = first.getPosition();
-	upgradePosition2 = second.getPosition();
-	upgradePosition3 = third.getPosition();
+	upgradePosition1 = upgrade1.getPosition();
+	upgradePosition2 = upgrade2.getPosition();
+	upgradePosition3 = upgrade3.getPosition();
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -39,7 +46,6 @@ void GameState::Update(UpdateContext updateContext)
 		
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			onclickUpgrade(updateContext, upgradePosition1, upgradePosition2, upgradePosition3);
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
 
@@ -50,9 +56,10 @@ void GameState::Update(UpdateContext updateContext)
 		}
 	}
 	//std::cout << updateContext.m_DeltaTime << std::endl;
-	onclickUpgrade(updateContext, upgradePosition1, upgradePosition2, upgradePosition3);
 	hoverAppleTree(updateContext);
-	hoverUpgrade(updateContext);
+	disableUpgrade(updateContext, upgrade1, upgrade1Text, upgradePosition1);
+	disableUpgrade(updateContext, upgrade2, upgrade2Text, upgradePosition2);
+	disableUpgrade(updateContext, upgrade3, upgrade3Text, upgradePosition3);
 	drawAll(updateContext.m_pWindow);
 	if (event.type == sf::Event::Closed)
 			updateContext.m_pWindow->close();
@@ -90,20 +97,20 @@ void GameState::makeCookieAmount(sf::Vector2u)
 void GameState::makeUpgrades(sf::Vector2u windowSize)
 {
 	sf::Sprite upgradeTextureSprite;
-	const sf::Texture *upgradeTexture = m_pResourceManager->getTexture("first");
+	const sf::Texture *upgradeTexture = m_pResourceManager->getTexture("upgrade1");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 5.5* upgradeTexture->getSize().y-10));
-	this-> first = upgradeTextureSprite;
+	this-> upgrade1 = upgradeTextureSprite;
 
-	upgradeTexture = m_pResourceManager->getTexture("second");
+	upgradeTexture = m_pResourceManager->getTexture("upgrade2");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 4* upgradeTexture->getSize().y-5));
-	this->second = upgradeTextureSprite;
+	this->upgrade2 = upgradeTextureSprite;
 
-	upgradeTexture = m_pResourceManager->getTexture("third");
+	upgradeTexture = m_pResourceManager->getTexture("upgrade3");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 2.5* upgradeTexture->getSize().y));
-	this->third = upgradeTextureSprite;
+	this->upgrade3 = upgradeTextureSprite;
 }
 
 void GameState::makeInstruction(sf::Vector2u windowSize)
@@ -129,6 +136,29 @@ void GameState::makeTextUpgrades(sf::Vector2u windowSize, sf::Text& upgrade)
 	upgrade.setOutlineThickness(5);
 }
 
+void GameState::makeUpgradesName(sf::Text& upgradeName)//and cost
+{
+	const sf::Font *font = m_pResourceManager->getFont("ubuntu");
+	upgradeName.setFont(*font);
+	upgradeName.setCharacterSize(30);
+	upgradeName.setStyle(sf::Text::Bold);
+	upgradeName.setFillColor(sf::Color(255, 255, 255, 255));
+	upgradeName.setOutlineColor(sf::Color::Black);
+	upgradeName.setOutlineThickness(1);
+}
+
+
+
+void GameState::setUpgradesName()
+{
+	upgrade1Name.setString("MOC");
+	upgrade2Name.setString("SZYBKOSC");
+	upgrade3Name.setString("OGIEN");
+
+	upgrade1Name.setPosition(upgrade1.getPosition().x, upgrade1.getPosition().y - 45);
+	upgrade2Name.setPosition(upgrade2.getPosition().x, upgrade2.getPosition().y - 45);
+	upgrade3Name.setPosition(upgrade3.getPosition().x, upgrade3.getPosition().y - 45);
+}
 
 void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long points)
 {
@@ -141,18 +171,40 @@ void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long po
 
 void GameState::drawUpgradesAmount(sf::RenderWindow *window)
 {
-	upgrade1.setString("1");
-	upgrade2.setString("1");
-	upgrade3.setString("1");
+	upgrade1Text.setString("1");
+	upgrade2Text.setString("1");
+	upgrade3Text.setString("1");
 	
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
 	//+250 - characterSize* amount 
-	upgrade1.setPosition(first.getPosition().x + 250, first.getPosition().y + 10);
-	upgrade2.setPosition(second.getPosition().x + 250, second.getPosition().y + 10);
-	upgrade3.setPosition(third.getPosition().x + 250, third.getPosition().y + 10);
-	window->draw(upgrade1);
-	window->draw(upgrade2);
-	window->draw(upgrade3);
+	upgrade1Text.setPosition(upgrade1.getPosition().x + 250, upgrade1.getPosition().y + 10);
+	upgrade2Text.setPosition(upgrade2.getPosition().x + 250, upgrade2.getPosition().y + 10);
+	upgrade3Text.setPosition(upgrade3.getPosition().x + 250, upgrade3.getPosition().y + 10);
+	window->draw(upgrade1Text);
+	window->draw(upgrade2Text);
+	window->draw(upgrade3Text);
+}
+
+void GameState::drawUpgradesCost(sf::RenderWindow *window)
+{
+	std::string cost1, cost2, cost3;
+	cost1 = "Koszt " + std::to_string(1);
+	cost2 = "Koszt " + std::to_string(1);
+	cost3 = "Koszt " + std::to_string(1);
+	upgrade1Cost.setString(cost1);
+	upgrade2Cost.setString(cost2);
+	upgrade3Cost.setString(cost3);
+
+	unsigned int charactersSize1 = upgrade1Cost.getLocalBounds().width;
+	unsigned int charactersSize2 = upgrade2Cost.getLocalBounds().width;
+	unsigned int charactersSize3 = upgrade3Cost.getLocalBounds().width;
+	//+250 - characterSize* amount 
+	upgrade1Cost.setPosition(upgrade1.getPosition().x + 250 - charactersSize1, upgrade1.getPosition().y + 60);
+	upgrade2Cost.setPosition(upgrade2.getPosition().x + 250 - charactersSize2, upgrade2.getPosition().y + 60);
+	upgrade3Cost.setPosition(upgrade3.getPosition().x + 250 - charactersSize3, upgrade3.getPosition().y + 60);
+	window->draw(upgrade1Cost);
+	window->draw(upgrade2Cost);
+	window->draw(upgrade3Cost);
 }
 
 void GameState::drawAll(sf::RenderWindow* window)
@@ -162,12 +214,16 @@ void GameState::drawAll(sf::RenderWindow* window)
 	window->draw(logo);
 	window->draw(appleTreeSprite);
 	drawCookieAmount(window, this->m_pApple->getAppleCount());
-	window->draw(first);
-	window->draw(second);
-	window->draw(third);
+	window->draw(upgrade1);
+	window->draw(upgrade2);
+	window->draw(upgrade3);
 	if(this->m_pApple->getAppleCount()<5) 
 		window->draw(instruction);
 	drawUpgradesAmount(window);
+	window->draw(upgrade1Name);
+	window->draw(upgrade2Name);
+	window->draw(upgrade3Name);
+	drawUpgradesCost(window);
 	window->display();
 }
 
@@ -188,28 +244,24 @@ void GameState::hoverAppleTree(UpdateContext updateContext)
 		this->appleTreeSprite.setColor(sf::Color(255, 230, 255, 255));
 }
 
-void GameState::hoverUpgrade(UpdateContext updateContext)
+void GameState::hoverUpgrade(UpdateContext updateContext, sf::Sprite &upgrade)
 {
 	sf::Vector2i mouse = sf::Mouse::getPosition(*updateContext.m_pWindow);
 
-	(isSpriteHover(this->first, mouse)) ? this->first.setColor(sf::Color(255, 255, 255, 255)) : this->first.setColor(sf::Color(250, 230, 255, 255));
-	(isSpriteHover(this->second, mouse)) ? this->second.setColor(sf::Color(255, 255, 255, 255)) : this->second.setColor(sf::Color(250, 230, 255, 255));
-	isSpriteHover(this->third, mouse) ? this->third.setColor(sf::Color(255, 255, 255, 255)) : this->third.setColor(sf::Color(250, 230, 255, 255));
+	(isSpriteHover(upgrade, mouse)) ? upgrade.setColor(sf::Color(255, 255, 255, 255)) : upgrade.setColor(sf::Color(250, 230, 255, 255));
 }
 
-void GameState::onclickUpgrade(UpdateContext updateContext, sf::Vector2f upgradePosition1, sf::Vector2f upgradePosition2, sf::Vector2f upgradePosition3)
+void GameState::onclickUpgrade(UpdateContext updateContext, sf::Sprite &upgrade, sf::Vector2f upgradePosition)
 {	
 	sf::Vector2i mouse = sf::Mouse::getPosition(*updateContext.m_pWindow);
 
-	(isSpriteHover(this->first, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->first, upgradePosition1) : unactiveUpgrade(this->first, upgradePosition1);
-	(isSpriteHover(this->second, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->second, upgradePosition2) : unactiveUpgrade(this->second, upgradePosition2);
-	(isSpriteHover(this->third, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(this->third, upgradePosition3) : unactiveUpgrade(this->third, upgradePosition3);
+	(isSpriteHover(upgrade, mouse) && (sf::Mouse::isButtonPressed(sf::Mouse::Left))) ? activeUpgrade(upgrade, upgradePosition) : unactiveUpgrade(upgrade, upgradePosition);
 }
 
 void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
 {
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
-	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
+	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x - 6, textureSize.y - 6));
 	upgrade.setPosition(texturePosition.x + 6, texturePosition.y + 6);
 }
 
@@ -218,4 +270,17 @@ void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePositio
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
 	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
 	upgrade.setPosition(texturePosition.x - 6, texturePosition.y - 6);
+}
+
+void GameState::disableUpgrade(UpdateContext updateContext, sf::Sprite &upgrade, sf::Text& textUpgrade, sf::Vector2f upgradePosition)
+{
+	//
+	if (0) {
+		upgrade.setColor(sf::Color(40, 40, 40));
+		textUpgrade.setOutlineThickness(0);
+	}
+	else {
+		onclickUpgrade(updateContext, upgrade, upgradePosition);
+		hoverUpgrade(updateContext, upgrade);
+	}
 }

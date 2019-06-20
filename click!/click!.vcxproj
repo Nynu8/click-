@@ -139,10 +139,10 @@
   <ItemGroup>
     <Image Include="assets\apple.png" />
     <Image Include="assets\apple_tree.png" />
-    <Image Include="assets\click.png" />
+    <Image Include="assets\upgrade1.png" />
     <Image Include="assets\logo.png" />
-    <Image Include="assets\second.png" />
-    <Image Include="assets\third.png" />
+    <Image Include="assets\upgrade2.png" />
+    <Image Include="assets\upgrade3.png" />
     <Image Include="assets\wood.png" />
   </ItemGroup>
   <ItemGroup>

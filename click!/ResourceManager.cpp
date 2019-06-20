@@ -26,16 +26,16 @@ ResourceManager::ResourceManager()
 		m_textures["appleTree"] = appleTtexture;
 
 	sf::Texture* first = new sf::Texture();
-	if (first->loadFromFile("./assets/click.png"))
-		m_textures["first"] = first;
+	if (first->loadFromFile("./assets/upgrade1.png"))
+		m_textures["upgrade1"] = first;
 
 	sf::Texture* second = new sf::Texture();
-	if (second->loadFromFile("./assets/second.png"))
-		m_textures["second"] = second;
+	if (second->loadFromFile("./assets/upgrade2.png"))
+		m_textures["upgrade2"] = second;
 
 	sf::Texture* third = new sf::Texture();
-	if (third->loadFromFile("./assets/third.png"))
-		m_textures["third"] = third;
+	if (third->loadFromFile("./assets/upgrade3.png"))
+		m_textures["upgrade3"] = third;
 
 	sf::Texture* background = new sf::Texture();
 	if (background->loadFromFile("./assets/wood.jpg"))
