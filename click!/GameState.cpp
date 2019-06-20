@@ -6,7 +6,6 @@
 
 GameState::GameState(StateManager * stateManager)
 {
-
 	m_pStateManager = stateManager;
 	m_pApple = new Apple();
 	m_pResourceManager = new ResourceManager();
@@ -20,6 +19,7 @@ GameState::GameState(StateManager * stateManager)
 	makeAppleTree(windowSize);
 	makeCookieAmount(windowSize);
 	makeUpgrades(windowSize);
+	makeInstruction(windowSize);
 
 	upgradePosition1 = first.getPosition();
 	upgradePosition2 = second.getPosition();
@@ -31,8 +31,7 @@ void GameState::Update(UpdateContext updateContext)
 	sf::Event event;
 	while (updateContext.m_pWindow->pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
-			updateContext.m_pWindow->close();
+		
 		
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
@@ -51,6 +50,8 @@ void GameState::Update(UpdateContext updateContext)
 	hoverAppleTree(updateContext);
 	hoverUpgrade(updateContext);
 	drawAll(updateContext.m_pWindow);
+	if (event.type == sf::Event::Closed)
+			updateContext.m_pWindow->close();
 }
 
 void GameState::makeLogo(sf::Vector2u windowSize)
@@ -59,7 +60,7 @@ void GameState::makeLogo(sf::Vector2u windowSize)
 	const sf::Texture *logoTexture = m_pResourceManager->getTexture("logo");
 	logoTextureSpirte.setTexture(*logoTexture);
 	this->logo = logoTextureSpirte;
-
+	logo.setColor(sf::Color(255, 255, 255, 160));
 }
 
 void GameState::makeAppleTree(sf::Vector2u windowSize)
@@ -73,10 +74,12 @@ void GameState::makeAppleTree(sf::Vector2u windowSize)
 
 void GameState::makeCookieAmount(sf::Vector2u)
 {
-	const sf::Font *font = m_pResourceManager->getFont("Rainbow");
+	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
 	textPoints.setFont(*font);
 	textPoints.setCharacterSize(60);
 	textPoints.setFillColor(sf::Color::White);
+	textPoints.setOutlineColor(sf::Color(226, 91, 48, 160));
+	textPoints.setOutlineThickness(5);
 	textPoints.setStyle(sf::Text::Bold);
 }
 
@@ -99,6 +102,18 @@ void GameState::makeUpgrades(sf::Vector2u windowSize)
 	this->third = upgradeTextureSprite;
 }
 
+void GameState::makeInstruction(sf::Vector2u windowSize)
+{
+	const sf::Font *font = m_pResourceManager->getFont("ubuntu");
+	instruction.setFont(*font);
+	instruction.setCharacterSize(30);
+	instruction.setStyle(sf::Text::Bold);
+
+	instruction.setString("Klikaj na drzewo, aby uzyskac punkty \nza które mozesz kupiæ ulepszenia \naby miec jeszcze wiecej punktów");
+	instruction.setPosition(10, windowSize.y-120);
+	instruction.setFillColor(sf::Color(255, 255, 255, 160));
+}
+
 void GameState::drawAppleTree(sf::RenderWindow* window)
 {
 	window->draw(this->appleTreeSprite);
@@ -116,9 +131,9 @@ void GameState::hoverUpgrade(UpdateContext updateContext)
 {
 	sf::Vector2i mouse = sf::Mouse::getPosition(*updateContext.m_pWindow);
 
-	(isSpriteHover(this->first, mouse)) ? this->first.setColor(sf::Color(255, 255, 255, 255)) : this->first.setColor(sf::Color(255, 230, 255, 255));
-	(isSpriteHover(this->second, mouse)) ? this->second.setColor(sf::Color(255, 255, 255, 255)) : this->second.setColor(sf::Color(255, 230, 255, 255));
-	isSpriteHover(this->third, mouse) ? this->third.setColor(sf::Color(255, 255, 255, 255)) : this->third.setColor(sf::Color(255, 230, 255, 255));
+	(isSpriteHover(this->first, mouse)) ? this->first.setColor(sf::Color(255, 255, 255, 255)) : this->first.setColor(sf::Color(250, 230, 255, 255));
+	(isSpriteHover(this->second, mouse)) ? this->second.setColor(sf::Color(255, 255, 255, 255)) : this->second.setColor(sf::Color(250, 230, 255, 255));
+	isSpriteHover(this->third, mouse) ? this->third.setColor(sf::Color(255, 255, 255, 255)) : this->third.setColor(sf::Color(250, 230, 255, 255));
 }
 
 void GameState::onclickUpgrade(UpdateContext updateContext, sf::Vector2f upgradePosition1, sf::Vector2f upgradePosition2, sf::Vector2f upgradePosition3)
@@ -150,6 +165,7 @@ void GameState::drawAll(sf::RenderWindow* window)
 	window->draw(first);
 	window->draw(second);
 	window->draw(third);
+	window->draw(instruction);
 	window->display();
 }
 
@@ -167,7 +183,7 @@ void GameState::activeUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
 	sf::Vector2u windowSize(1200, 800);
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
 	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x - 8, textureSize.y - 8));
-	upgrade.setPosition(texturePosition.x + 8, texturePosition.y + 8);
+	upgrade.setPosition(texturePosition.x + 6, texturePosition.y + 6);
 }
 
 void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePosition)
@@ -175,5 +191,5 @@ void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePositio
 	sf::Vector2u windowSize(1200, 800);
 	sf::Vector2u textureSize = (upgrade.getTexture())->getSize();
 	upgrade.setTextureRect(sf::IntRect(0, 0, textureSize.x, textureSize.y));
-	upgrade.setPosition(texturePosition.x - 8, texturePosition.y - 8);
+	upgrade.setPosition(texturePosition.x - 6, texturePosition.y - 6);
 }

@@ -9,13 +9,13 @@ ResourceManager::ResourceManager()
 	
 	//pointer font
 	sf::Font* poiFont = new sf::Font();
-	if (defFont->loadFromFile("./assets/HandVetica.ttf"))
-		m_fonts["HandVetica"] = defFont;
+	if (poiFont->loadFromFile("./assets/HandVetica.ttf"))
+		m_fonts["HandVetica"] = poiFont;
 
 	//instruction font
 	sf::Font* insFont = new sf::Font();
-	if (insFont->loadFromFile("./assets/Rainbow.ttf"))
-		m_fonts["Rainbow"] = defFont;
+	if (insFont->loadFromFile("./assets/ubuntu.ttf"))
+		m_fonts["ubuntu"] = insFont;
 
 	sf::Texture* logoTexture = new sf::Texture();
 	if (logoTexture->loadFromFile("./assets/logo.png"))

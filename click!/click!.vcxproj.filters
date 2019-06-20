@@ -81,7 +81,7 @@
     <Font Include="assets\HandVetica.ttf">
       <Filter>Resource Files</Filter>
     </Font>
-    <Font Include="assets\Rainbow.ttf">
+    <Font Include="assets\ubuntu.ttf">
       <Filter>Resource Files</Filter>
     </Font>
   </ItemGroup>

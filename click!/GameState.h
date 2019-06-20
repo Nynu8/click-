@@ -15,6 +15,7 @@ public:
 	void makeAppleTree(sf::Vector2u);
 	void makeCookieAmount(sf::Vector2u);
 	void makeUpgrades(sf::Vector2u);
+	void makeInstruction(sf::Vector2u);
 
 	void drawAppleTree(sf::RenderWindow*);
 	void drawCookieAmount(sf::Vector2u, sf::RenderWindow* , unsigned long long);
@@ -27,6 +28,7 @@ public:
 	void activeUpgrade(sf::Sprite&, sf::Vector2f);
 	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
 
+
 private:
 	StateManager* m_pStateManager;
 	Apple* m_pApple;
@@ -38,6 +40,7 @@ private:
 	sf::Vector2f upgradePosition3;
 
 	//std::map<std::string, sf::Sprite*> m_sprite;
+	
 	sf::Sprite logo; 
 	sf::Sprite appleTreeSprite;
 	sf::Sprite background;
@@ -47,4 +50,5 @@ private:
 	sf::Sprite third;
 	//Upgrades
 	sf::Text textPoints;
+	sf::Text instruction;
 };
