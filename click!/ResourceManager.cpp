@@ -12,6 +12,15 @@ ResourceManager::ResourceManager()
 	if (defFont->loadFromFile("./assets/HandVetica.ttf"))
 		m_fonts["HandVetica"] = defFont;
 
+	//instruction font
+	sf::Font* insFont = new sf::Font();
+	if (insFont->loadFromFile("./assets/Rainbow.ttf"))
+		m_fonts["Rainbow"] = defFont;
+
+	sf::Texture* logoTexture = new sf::Texture();
+	if (logoTexture->loadFromFile("./assets/logo.png"))
+		m_textures["logo"] = logoTexture;
+
 	sf::Texture* appleTtexture = new sf::Texture();
 	if (appleTtexture->loadFromFile("./assets/apple_tree.png"))
 		m_textures["appleTree"] = appleTtexture;

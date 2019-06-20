@@ -11,6 +11,7 @@ public:
 	GameState(StateManager* stateManager);
 	void Update(UpdateContext updateContext) override;
 
+	void makeLogo(sf::Vector2u);
 	void makeAppleTree(sf::Vector2u);
 	void makeCookieAmount(sf::Vector2u);
 	void makeUpgrades(sf::Vector2u);
@@ -20,7 +21,8 @@ public:
 	void drawAll(sf::RenderWindow* window);
 
 	void hoverAppleTree(UpdateContext updateContext);
-	void hoverUpgrade(UpdateContext updateContext, sf::Vector2f, sf::Vector2f, sf::Vector2f);
+	void hoverUpgrade(UpdateContext updateContext);
+	void onclickUpgrade(UpdateContext updateContext, sf::Vector2f, sf::Vector2f, sf::Vector2f);
 	bool isSpriteHover(sf::Sprite rect, sf::Vector2i mouse);
 	void activeUpgrade(sf::Sprite&, sf::Vector2f);
 	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
@@ -36,6 +38,7 @@ private:
 	sf::Vector2f upgradePosition3;
 
 	//std::map<std::string, sf::Sprite*> m_sprite;
+	sf::Sprite logo; 
 	sf::Sprite appleTreeSprite;
 	sf::Sprite background;
 	//Upgrades
