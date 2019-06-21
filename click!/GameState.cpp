@@ -4,15 +4,15 @@
 //tmp
 #include <iostream>
 
-GameState::GameState(StateManager * stateManager)
+GameState::GameState(StateManager* _stateManager)
 {
-	m_pStateManager = stateManager;
+	m_pStateManager = _stateManager;
 	m_pApple = new Apple();
 	m_pResourceManager = new ResourceManager();
 	
 	sf::Vector2u windowSize(width, height);
 
-	const sf::Texture *backgroundTexture = m_pResourceManager->getTexture("wood");
+	const sf::Texture *backgroundTexture = m_pResourceManager->GetTexture("wood");
 	background.setTexture(*backgroundTexture);
 	background.setTextureRect(sf::IntRect(0, 0, windowSize.x, windowSize.y));
 
@@ -37,10 +37,10 @@ GameState::GameState(StateManager * stateManager)
 	upgradePosition3 = upgrade3.getPosition();
 
 	std::string tmpNazwa = "blablabla";
-	Upgrade tmp(tmpNazwa, 1, 10);
-	tmp.addUpgradeLevel(10);
-	m_pApple->addUpgrade(tmp);
-	std::cout << m_pApple->getApplesPerSecond() << std::endl;
+	Upgrade tmp(tmpNazwa, 1, 1);
+	tmp.AddUpgradeLevel(10);
+	m_pApple->AddUpgrade(tmp);
+	std::cout << m_pApple->GetApplesPerSecond() << std::endl;
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -60,18 +60,18 @@ void GameState::Update(UpdateContext updateContext)
 			{
 
 				if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
-					this->m_pApple->addApples(1);
+					this->m_pApple->AddApples(1);
 				}
 			}
 		}
 	}
 
-	applesToAdd += updateContext.m_DeltaTime * m_pApple->getApplesPerSecond();
-	//std::cout << m_pApple->getApplesPerSecond() << std::endl;
+	applesToAdd += updateContext.m_deltaTime * m_pApple->GetApplesPerSecond();
+	//std::cout << apple->GetApplesPerSecond() << std::endl;
 	if (applesToAdd > 1) {
 		int tmpApples = (int)applesToAdd;
 		applesToAdd -= tmpApples;
-		m_pApple->addApples(tmpApples);
+		m_pApple->AddApples(tmpApples);
 	}
 	//std::cout << updateContext.m_DeltaTime << std::endl;
 	hoverAppleTree(updateContext);
@@ -84,7 +84,7 @@ void GameState::Update(UpdateContext updateContext)
 void GameState::makeLogo(sf::Vector2u windowSize)
 {
 	sf::Sprite logoTextureSpirte;
-	const sf::Texture *logoTexture = m_pResourceManager->getTexture("logo");
+	const sf::Texture *logoTexture = m_pResourceManager->GetTexture("logo");
 	logoTextureSpirte.setTexture(*logoTexture);
 	this->logo = logoTextureSpirte;
 	logo.setColor(sf::Color(255, 255, 255, 160));
@@ -93,7 +93,7 @@ void GameState::makeLogo(sf::Vector2u windowSize)
 void GameState::makeAppleTree(sf::Vector2u windowSize)
 {
 	sf::Sprite appleTextureSprite;
-	const sf::Texture *appleTextureTree = m_pResourceManager->getTexture("appleTree");
+	const sf::Texture *appleTextureTree = m_pResourceManager->GetTexture("appleTree");
 	appleTextureSprite.setTexture(*appleTextureTree);
 	appleTextureSprite.setPosition((windowSize.x - appleTextureTree->getSize().x) / 2, (windowSize.y - appleTextureTree->getSize().y) / 2);
 	this->appleTreeSprite = appleTextureSprite;
@@ -101,7 +101,7 @@ void GameState::makeAppleTree(sf::Vector2u windowSize)
 
 void GameState::makeCookieAmount(sf::Vector2u)
 {
-	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
+	const sf::Font *font = m_pResourceManager->GetFont("HandVetica");
 	textPoints.setFont(*font);
 	textPoints.setCharacterSize(60);
 	textPoints.setFillColor(sf::Color::White);
@@ -113,17 +113,17 @@ void GameState::makeCookieAmount(sf::Vector2u)
 void GameState::makeUpgrades(sf::Vector2u windowSize)
 {
 	sf::Sprite upgradeTextureSprite;
-	const sf::Texture *upgradeTexture = m_pResourceManager->getTexture("upgrade1");
+	const sf::Texture *upgradeTexture = m_pResourceManager->GetTexture("upgrade1");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 5.5* upgradeTexture->getSize().y-10));
 	this-> upgrade1 = upgradeTextureSprite;
 
-	upgradeTexture = m_pResourceManager->getTexture("upgrade2");
+	upgradeTexture = m_pResourceManager->GetTexture("upgrade2");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 4* upgradeTexture->getSize().y-5));
 	this->upgrade2 = upgradeTextureSprite;
 
-	upgradeTexture = m_pResourceManager->getTexture("upgrade3");
+	upgradeTexture = m_pResourceManager->GetTexture("upgrade3");
 	upgradeTextureSprite.setTexture(*upgradeTexture);
 	upgradeTextureSprite.setPosition((windowSize.x - upgradeTexture->getSize().x-10), (windowSize.y - 2.5* upgradeTexture->getSize().y));
 	this->upgrade3 = upgradeTextureSprite;
@@ -131,7 +131,7 @@ void GameState::makeUpgrades(sf::Vector2u windowSize)
 
 void GameState::makeInstruction(sf::Vector2u windowSize)
 {
-	const sf::Font *font = m_pResourceManager->getFont("ubuntu");
+	const sf::Font *font = m_pResourceManager->GetFont("ubuntu");
 	instruction.setFont(*font);
 	instruction.setCharacterSize(30);
 	instruction.setStyle(sf::Text::Bold);
@@ -143,7 +143,7 @@ void GameState::makeInstruction(sf::Vector2u windowSize)
 
 void GameState::makeTextUpgrades(sf::Vector2u windowSize, sf::Text& upgrade)
 {
-	const sf::Font *font = m_pResourceManager->getFont("HandVetica");
+	const sf::Font *font = m_pResourceManager->GetFont("HandVetica");
 	upgrade.setFont(*font);
 	upgrade.setCharacterSize(50);
 	upgrade.setStyle(sf::Text::Bold);
@@ -154,7 +154,7 @@ void GameState::makeTextUpgrades(sf::Vector2u windowSize, sf::Text& upgrade)
 
 void GameState::makeUpgradesName(sf::Text& upgradeName)//and cost
 {
-	const sf::Font *font = m_pResourceManager->getFont("ubuntu");
+	const sf::Font *font = m_pResourceManager->GetFont("ubuntu");
 	upgradeName.setFont(*font);
 	upgradeName.setCharacterSize(30);
 	upgradeName.setStyle(sf::Text::Bold);
@@ -229,11 +229,11 @@ void GameState::drawAll(sf::RenderWindow* window)
 	window->draw(background);
 	window->draw(logo);
 	window->draw(appleTreeSprite);
-	drawCookieAmount(window, this->m_pApple->getAppleCount());
+	drawCookieAmount(window, this->m_pApple->GetAppleCount());
 	window->draw(upgrade1);
 	window->draw(upgrade2);
 	window->draw(upgrade3);
-	if(this->m_pApple->getAppleCount()<5) 
+	if(this->m_pApple->GetAppleCount() < 5) 
 		window->draw(instruction);
 	drawUpgradesAmount(window);
 	window->draw(upgrade1Name);
@@ -245,7 +245,6 @@ void GameState::drawAll(sf::RenderWindow* window)
 
 bool GameState::isSpriteHover(sf::Sprite rect, sf::Vector2i mouse) {
 	if (rect.getGlobalBounds().contains(mouse.x, mouse.y)) {
-		//std::cout << "Button Hover" << std::endl;
 		return true;
 	}
 
@@ -290,7 +289,6 @@ void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePositio
 
 void GameState::disableUpgrade(UpdateContext updateContext, sf::Sprite &upgrade, sf::Text& textUpgrade, sf::Vector2f upgradePosition)
 {
-	//
 	if (0) {
 		upgrade.setColor(sf::Color(40, 40, 40));
 		textUpgrade.setOutlineThickness(0);

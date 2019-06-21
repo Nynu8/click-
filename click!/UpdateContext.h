@@ -3,6 +3,6 @@
 
 struct UpdateContext
 {
-	float m_DeltaTime;
+	float m_deltaTime;
 	sf::RenderWindow* m_pWindow;
 };

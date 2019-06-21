@@ -21,7 +21,7 @@ int main()
 
 	while (window.isOpen())
 	{
-		kContext.m_DeltaTime = clock.getElapsedTime().asSeconds();
+		kContext.m_deltaTime = clock.getElapsedTime().asSeconds();
 		clock.restart();
 		stateManager.Update(kContext);
 	}

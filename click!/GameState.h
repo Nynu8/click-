@@ -10,7 +10,6 @@ constexpr int width = 1200;
 class GameState : public State
 {
 public:
-	//GameState(StateManager* stateManager): m_pStateManager(stateManager), m_pApple(new Apple()){};
 	GameState(StateManager* stateManager);
 	void Update(UpdateContext updateContext) override;
 

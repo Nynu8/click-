@@ -4,20 +4,20 @@
 class Upgrade
 {
 public:
-	Upgrade(std::string name, int appleAmountPerSecond, int upgradeCost) : m_name(&name), appleAmountPerSecond(appleAmountPerSecond), m_upgradeCost(upgradeCost) {};
-	void addUpgradeLevel(int);
-	const std::string& getName() const;
-	double getUpgradeCost() const;
-	double getApplesPerSecond() const;
+	Upgrade(std::string name, int appleAmountPerSecond, int upgradeCost) : name(&name), appleAmountPerSecond(appleAmountPerSecond), upgradeCost(upgradeCost) {};
+	void AddUpgradeLevel(int);
+	const std::string& GetName() const;
+	double GetUpgradeCost() const;
+	double GetApplesPerSecond() const;
 
 private:
-	std::string *m_name;
-	int m_upgradeLevel = 0;
+	std::string *name;
+	int upgradeLevel = 0;
 	int appleAmountPerSecond = 0;
-	int m_upgradeCost = 0;
+	int upgradeCost = 0;
 };
 
-inline const std::string& Upgrade::getName() const { return *this->m_name; }
-inline double Upgrade::getUpgradeCost() const { return pow(this->m_upgradeCost + 1, m_upgradeLevel); }
-inline double Upgrade::getApplesPerSecond() const { return appleAmountPerSecond*std::log2(m_upgradeLevel+1); }
-inline void Upgrade::addUpgradeLevel(int level) { this->m_upgradeLevel += level; }
+inline const std::string& Upgrade::GetName() const { return *this->name; }
+inline double Upgrade::GetUpgradeCost() const { return pow(this->upgradeCost + 1, upgradeLevel); }
+inline double Upgrade::GetApplesPerSecond() const { return appleAmountPerSecond*std::log2(upgradeLevel+1); }
+inline void Upgrade::AddUpgradeLevel(int level) { this->upgradeLevel += level; }

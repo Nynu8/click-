@@ -8,13 +8,13 @@ public:
 	template<class T>
 	void TransitionTo()
 	{
-		m_pState = new T(this);
+		state = new T(this);
 	}
 
 	void Update(UpdateContext updateContext)
 	{
-		m_pState->Update(updateContext);
+		state->Update(updateContext);
 	}
 private:
-	State* m_pState;
+	State* state;
 };
