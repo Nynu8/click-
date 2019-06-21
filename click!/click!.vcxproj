@@ -139,10 +139,16 @@
   <ItemGroup>
     <Image Include="assets\apple.png" />
     <Image Include="assets\apple_tree.png" />
+    <Image Include="assets\upgrade1.png" />
+    <Image Include="assets\logo.png" />
+    <Image Include="assets\upgrade2.png" />
+    <Image Include="assets\upgrade3.png" />
+    <Image Include="assets\wood.png" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\arial.TTF" />
     <Font Include="assets\HandVetica.ttf" />
+    <Font Include="assets\ubuntu.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -58,12 +58,30 @@
     <Image Include="assets\apple_tree.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\wood.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\logo.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\upgrade3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\arial.TTF">
       <Filter>Resource Files</Filter>
     </Font>
     <Font Include="assets\HandVetica.ttf">
+      <Filter>Resource Files</Filter>
+    </Font>
+    <Font Include="assets\ubuntu.ttf">
       <Filter>Resource Files</Filter>
     </Font>
   </ItemGroup>
