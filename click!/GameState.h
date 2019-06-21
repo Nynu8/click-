@@ -44,6 +44,7 @@ private:
 	Apple* m_pApple;
 	ResourceManager* m_pResourceManager;
 	std::vector<Upgrade> m_upgrades;
+	double applesToAdd = 0;		//how many apples to add in each game loop from upgrades
 
 	sf::Vector2f upgradePosition1;
 	sf::Vector2f upgradePosition2;
@@ -74,7 +75,5 @@ private:
 	sf::Text textPoints;
 	sf::Text instruction;
 
-
 	sf::Image icon;
-	float applesToAdd = 0;
 };

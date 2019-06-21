@@ -35,6 +35,12 @@ GameState::GameState(StateManager * stateManager)
 	upgradePosition1 = upgrade1.getPosition();
 	upgradePosition2 = upgrade2.getPosition();
 	upgradePosition3 = upgrade3.getPosition();
+
+	std::string tmpNazwa = "blablabla";
+	Upgrade tmp(tmpNazwa, 1, 10);
+	tmp.addUpgradeLevel(10);
+	m_pApple->addUpgrade(tmp);
+	std::cout << m_pApple->getApplesPerSecond() << std::endl;
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -43,7 +49,10 @@ void GameState::Update(UpdateContext updateContext)
 	while (updateContext.m_pWindow->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
+		{
+			//tu bedziemy zapisywac stan gry
 			updateContext.m_pWindow->close();
+		}
 
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
@@ -58,7 +67,7 @@ void GameState::Update(UpdateContext updateContext)
 	}
 
 	applesToAdd += updateContext.m_DeltaTime * m_pApple->getApplesPerSecond();
-	std::cout << m_pApple->getApplesPerSecond() << std::endl;
+	//std::cout << m_pApple->getApplesPerSecond() << std::endl;
 	if (applesToAdd > 1) {
 		int tmpApples = (int)applesToAdd;
 		applesToAdd -= tmpApples;
