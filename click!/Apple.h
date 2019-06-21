@@ -5,7 +5,7 @@
 class Apple
 {
 public:
-	void AddApples(uint64_t);
+	void AddApples(int64_t);
 	void AddUpgrade(Upgrade);
 	uint64_t GetAppleCount() const;
 	float GetApplesPerSecond() const;
@@ -17,6 +17,6 @@ private:
 	void CalculateApplesPerSecond();
 };
 
-inline void Apple::AddApples(uint64_t x) { this->m_appleCount += x; }
+inline void Apple::AddApples(int64_t x) { this->m_appleCount += x; }
 inline uint64_t Apple::GetAppleCount() const { return this->m_appleCount; }
 inline float Apple::GetApplesPerSecond() const { return this->m_currentApplesPerSecond; }

@@ -20,11 +20,11 @@ public:
 	void makeInstruction(sf::Vector2u);
 	void makeTextUpgrades(sf::Vector2u, sf::Text&);
 	void makeUpgradesName(sf::Text&);
-	void makeUpgradesCost(sf::Text&);
+	//void makeUpgradesCost(sf::Text&);
 
 	void setUpgradesName();
 
-	void drawCookieAmount(sf::RenderWindow* , unsigned long long);
+	void drawCookieAmount(sf::RenderWindow* , uint64_t);
 	void drawUpgradesAmount(sf::RenderWindow*);
 	void drawUpgradesCost(sf::RenderWindow*);
 	void drawAll(sf::RenderWindow*);
@@ -35,7 +35,7 @@ public:
 	bool isSpriteHover(sf::Sprite, sf::Vector2i);
 	void activeUpgrade(sf::Sprite&, sf::Vector2f);
 	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
-	void disableUpgrade(UpdateContext, sf::Sprite &, sf::Text&, sf::Vector2f);
+	void disableUpgrade(UpdateContext, sf::Sprite &, sf::Text&, sf::Vector2f, bool);
 
 
 private:
@@ -75,4 +75,6 @@ private:
 	sf::Text instruction;
 
 	sf::Image icon;
+
+	void disableUpgrades(UpdateContext);
 };

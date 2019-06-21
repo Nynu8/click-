@@ -36,11 +36,10 @@ GameState::GameState(StateManager* _stateManager)
 	upgradePosition2 = upgrade2.getPosition();
 	upgradePosition3 = upgrade3.getPosition();
 
-	std::string tmpNazwa = "blablabla";
-	Upgrade tmp(tmpNazwa, 1, 1);
-	tmp.AddUpgradeLevel(10);
-	m_pApple->AddUpgrade(tmp);
-	std::cout << m_pApple->GetApplesPerSecond() << std::endl;
+	//set upgrades
+	this->m_upgrades.push_back({ std::string("MOC"), 1, 15 });
+	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 3, 100 });
+	this->m_upgrades.push_back({ std::string("OGIEN"), 6, 1000 });
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -58,26 +57,46 @@ void GameState::Update(UpdateContext updateContext)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-
 				if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
 					this->m_pApple->AddApples(1);
+				}
+
+				if (isSpriteHover(this->upgrade1, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
+					if (this->m_upgrades.at(0).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
+						this->m_pApple->AddApples(this->m_upgrades.at(0).GetUpgradeCost()*-1);
+						this->m_upgrades.at(0).AddUpgradeLevel(1);
+						this->m_pApple->AddUpgrade(this->m_upgrades.at(0));
+					}
+				}
+
+				if (isSpriteHover(this->upgrade2, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
+					if (this->m_upgrades.at(1).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
+						this->m_pApple->AddApples(this->m_upgrades.at(1).GetUpgradeCost()*-1);
+						this->m_upgrades.at(1).AddUpgradeLevel(1);
+						this->m_pApple->AddUpgrade(this->m_upgrades.at(1));
+					}
+				}
+
+				if (isSpriteHover(this->upgrade3, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
+					if (this->m_upgrades.at(2).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
+						this->m_pApple->AddApples(this->m_upgrades.at(2).GetUpgradeCost()*-1);
+						this->m_upgrades.at(2).AddUpgradeLevel(1);
+						this->m_pApple->AddUpgrade(this->m_upgrades.at(2));
+					}
 				}
 			}
 		}
 	}
 
 	applesToAdd += updateContext.m_deltaTime * m_pApple->GetApplesPerSecond();
-	//std::cout << apple->GetApplesPerSecond() << std::endl;
 	if (applesToAdd > 1) {
 		int tmpApples = (int)applesToAdd;
 		applesToAdd -= tmpApples;
 		m_pApple->AddApples(tmpApples);
 	}
-	//std::cout << updateContext.m_DeltaTime << std::endl;
+
 	hoverAppleTree(updateContext);
-	disableUpgrade(updateContext, upgrade1, upgrade1Text, upgradePosition1);
-	disableUpgrade(updateContext, upgrade2, upgrade2Text, upgradePosition2);
-	disableUpgrade(updateContext, upgrade3, upgrade3Text, upgradePosition3);
+	disableUpgrades(updateContext);
 	drawAll(updateContext.m_pWindow);
 }
 
@@ -176,7 +195,7 @@ void GameState::setUpgradesName()
 	upgrade3Name.setPosition(upgrade3.getPosition().x, upgrade3.getPosition().y - 45);
 }
 
-void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long points)
+void GameState::drawCookieAmount(sf::RenderWindow* window, uint64_t points)
 {
 	textPoints.setString(std::to_string(points));
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
@@ -187,9 +206,9 @@ void GameState::drawCookieAmount(sf::RenderWindow* window, unsigned long long po
 
 void GameState::drawUpgradesAmount(sf::RenderWindow *window)
 {
-	upgrade1Text.setString("1");
-	upgrade2Text.setString("1");
-	upgrade3Text.setString("1");
+	upgrade1Text.setString(std::to_string(this->m_upgrades.at(0).GetUpgradeLevel()));
+	upgrade2Text.setString(std::to_string(this->m_upgrades.at(1).GetUpgradeLevel()));
+	upgrade3Text.setString(std::to_string(this->m_upgrades.at(2).GetUpgradeLevel()));
 	
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
 	//+250 - characterSize* amount 
@@ -203,13 +222,9 @@ void GameState::drawUpgradesAmount(sf::RenderWindow *window)
 
 void GameState::drawUpgradesCost(sf::RenderWindow *window)
 {
-	std::string cost1, cost2, cost3;
-	cost1 = "Koszt " + std::to_string(1);
-	cost2 = "Koszt " + std::to_string(1);
-	cost3 = "Koszt " + std::to_string(1);
-	upgrade1Cost.setString(cost1);
-	upgrade2Cost.setString(cost2);
-	upgrade3Cost.setString(cost3);
+	upgrade1Cost.setString(std::string("Koszt " + std::to_string(this->m_upgrades.at(0).GetUpgradeCost())));
+	upgrade2Cost.setString(std::string("Koszt " + std::to_string(this->m_upgrades.at(1).GetUpgradeCost())));
+	upgrade3Cost.setString(std::string("Koszt " + std::to_string(this->m_upgrades.at(2).GetUpgradeCost())));
 
 	unsigned int charactersSize1 = upgrade1Cost.getLocalBounds().width;
 	unsigned int charactersSize2 = upgrade2Cost.getLocalBounds().width;
@@ -287,9 +302,10 @@ void GameState::unactiveUpgrade(sf::Sprite &upgrade, sf::Vector2f texturePositio
 	upgrade.setPosition(texturePosition.x - 6, texturePosition.y - 6);
 }
 
-void GameState::disableUpgrade(UpdateContext updateContext, sf::Sprite &upgrade, sf::Text& textUpgrade, sf::Vector2f upgradePosition)
+void GameState::disableUpgrade(UpdateContext updateContext, sf::Sprite &upgrade, sf::Text& textUpgrade, sf::Vector2f upgradePosition, bool disable)
 {
-	if (0) {
+
+	if (disable) {
 		upgrade.setColor(sf::Color(40, 40, 40));
 		textUpgrade.setOutlineThickness(0);
 	}
@@ -297,4 +313,11 @@ void GameState::disableUpgrade(UpdateContext updateContext, sf::Sprite &upgrade,
 		onclickUpgrade(updateContext, upgrade, upgradePosition);
 		hoverUpgrade(updateContext, upgrade);
 	}
+}
+
+void GameState::disableUpgrades(UpdateContext updateContext)
+{
+	disableUpgrade(updateContext, upgrade1, upgrade1Text, upgradePosition1, (this->m_pApple->GetAppleCount() < this->m_upgrades.at(0).GetUpgradeCost()));
+	disableUpgrade(updateContext, upgrade2, upgrade2Text, upgradePosition2, (this->m_pApple->GetAppleCount() < this->m_upgrades.at(1).GetUpgradeCost()));
+	disableUpgrade(updateContext, upgrade3, upgrade3Text, upgradePosition3, (this->m_pApple->GetAppleCount() < this->m_upgrades.at(2).GetUpgradeCost()));
 }
