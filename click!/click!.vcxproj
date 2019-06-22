@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="Apple.h" />
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="json.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="State.h" />
     <ClInclude Include="StateManager.h" />

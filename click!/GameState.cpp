@@ -1,5 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
+#include <fstream>
+#include "json.h"
+
+using json = nlohmann::json;
 
 //tmp
 #include <iostream>
@@ -40,6 +44,8 @@ GameState::GameState(StateManager* _stateManager)
 	this->m_upgrades.push_back({ std::string("MOC"), 1, 15 });
 	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 3, 100 });
 	this->m_upgrades.push_back({ std::string("OGIEN"), 6, 1000 });
+	////load save
+	//load();
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -50,6 +56,7 @@ void GameState::Update(UpdateContext updateContext)
 		if (event.type == sf::Event::Closed)
 		{
 			//tu bedziemy zapisywac stan gry
+			save();
 			updateContext.m_pWindow->close();
 		}
 
@@ -209,12 +216,16 @@ void GameState::drawUpgradesAmount(sf::RenderWindow *window)
 	upgrade1Text.setString(std::to_string(this->m_upgrades.at(0).GetUpgradeLevel()));
 	upgrade2Text.setString(std::to_string(this->m_upgrades.at(1).GetUpgradeLevel()));
 	upgrade3Text.setString(std::to_string(this->m_upgrades.at(2).GetUpgradeLevel()));
-	
+
+	unsigned int charactersSize1 = upgrade1Text.getLocalBounds().width;
+	unsigned int charactersSize2 = upgrade2Text.getLocalBounds().width;
+	unsigned int charactersSize3 = upgrade3Text.getLocalBounds().width;
+
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
 	//+250 - characterSize* amount 
-	upgrade1Text.setPosition(upgrade1.getPosition().x + 250, upgrade1.getPosition().y + 10);
-	upgrade2Text.setPosition(upgrade2.getPosition().x + 250, upgrade2.getPosition().y + 10);
-	upgrade3Text.setPosition(upgrade3.getPosition().x + 250, upgrade3.getPosition().y + 10);
+	upgrade1Text.setPosition(upgrade1.getPosition().x + 250 - charactersSize1, upgrade1.getPosition().y + 10);
+	upgrade2Text.setPosition(upgrade2.getPosition().x + 250 - charactersSize2, upgrade2.getPosition().y + 10);
+	upgrade3Text.setPosition(upgrade3.getPosition().x + 250 - charactersSize3, upgrade3.getPosition().y + 10);
 	window->draw(upgrade1Text);
 	window->draw(upgrade2Text);
 	window->draw(upgrade3Text);
@@ -321,3 +332,22 @@ void GameState::disableUpgrades(UpdateContext updateContext)
 	disableUpgrade(updateContext, upgrade2, upgrade2Text, upgradePosition2, (this->m_pApple->GetAppleCount() < this->m_upgrades.at(1).GetUpgradeCost()));
 	disableUpgrade(updateContext, upgrade3, upgrade3Text, upgradePosition3, (this->m_pApple->GetAppleCount() < this->m_upgrades.at(2).GetUpgradeCost()));
 }
+
+void GameState::save()
+{
+	json data;
+	for (int i = 0; i < 3; i++) {
+		json upgrade={ this->m_upgrades.at(i).GetName(), this->m_upgrades.at(i).GetUpgradeCost(), this->m_upgrades.at(i).GetUpgradeLevel() };
+		data += upgrade;
+	}
+	std::ofstream file("data.json");
+	file << data;
+}
+//
+//void GameState::load()
+//{
+//	std::ifstream file("data.json");
+//	json data;
+//	file >> data;
+//	std::cout<< data[1][1];
+//}

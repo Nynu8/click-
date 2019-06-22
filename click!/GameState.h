@@ -77,4 +77,7 @@ private:
 	sf::Image icon;
 
 	void disableUpgrades(UpdateContext);
+
+	void save();
+	void load();
 };
