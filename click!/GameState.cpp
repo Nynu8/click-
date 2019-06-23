@@ -356,8 +356,10 @@ void GameState::load()
 		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[0][0], data[0][1]);
 
 		this->m_upgrades.at(1).AddUpgradeLevel(data[1][1]);
+		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[1][0], data[1][1]);
 		
 		this->m_upgrades.at(2).AddUpgradeLevel(data[2][1]);
+		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[2][0], data[2][1]);
 		
 		this->m_pApple->SetAppleCount(data[3]);
 	}
