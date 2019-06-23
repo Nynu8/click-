@@ -10,7 +10,6 @@ public:
 	uint64_t GetUpgradeCost() const;
 	double GetApplesPerSecond() const;
 	int GetUpgradeLevel() const;
-
 private:
 	std::string name;
 	int upgradeLevel = 0;

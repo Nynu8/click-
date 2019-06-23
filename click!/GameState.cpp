@@ -44,8 +44,8 @@ GameState::GameState(StateManager* _stateManager)
 	this->m_upgrades.push_back({ std::string("MOC"), 1, 15 });
 	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 3, 100 });
 	this->m_upgrades.push_back({ std::string("OGIEN"), 6, 1000 });
-	////load save
-	//load();
+	//load save
+	load();
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -337,17 +337,28 @@ void GameState::save()
 {
 	json data;
 	for (int i = 0; i < 3; i++) {
-		json upgrade={ this->m_upgrades.at(i).GetName(), this->m_upgrades.at(i).GetUpgradeCost(), this->m_upgrades.at(i).GetUpgradeLevel() };
+		json upgrade={ this->m_upgrades.at(i).GetName(), this->m_upgrades.at(i).GetUpgradeLevel() };
 		data += upgrade;
 	}
+	data += this->m_pApple->GetAppleCount();
 	std::ofstream file("data.json");
 	file << data;
 }
-//
-//void GameState::load()
-//{
-//	std::ifstream file("data.json");
-//	json data;
-//	file >> data;
-//	std::cout<< data[1][1];
-//}
+
+void GameState::load()
+{
+	std::ifstream file("data.json");
+	if (file.good()&&!file.eof()) {
+		json data;
+		file >> data;
+		std::cout << data[1][1];
+		this->m_upgrades.at(0).AddUpgradeLevel(data[0][1]);
+		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[0][0], data[0][1]);
+
+		this->m_upgrades.at(1).AddUpgradeLevel(data[1][1]);
+		
+		this->m_upgrades.at(2).AddUpgradeLevel(data[2][1]);
+		
+		this->m_pApple->SetAppleCount(data[3]);
+	}
+}

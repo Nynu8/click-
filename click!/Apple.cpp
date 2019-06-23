@@ -26,3 +26,20 @@ void Apple::AddUpgrade(Upgrade upgrade)
 
 	this->CalculateApplesPerSecond();
 }
+
+void Apple::AddLoadUpgrade(Upgrade upgrade, std::string name, int lvl)
+{
+	bool upgradeOnList = false;
+	for (std::vector<Upgrade>::iterator it = m_pUpgrades.begin(); it != m_pUpgrades.end(); ++it) {
+		if (it->GetName() == name) {
+			upgradeOnList = true;
+			it->AddUpgradeLevel(lvl);
+		}
+	}
+
+	if (!upgradeOnList) {
+		this->m_pUpgrades.push_back(upgrade);
+	}
+
+	this->CalculateApplesPerSecond();
+}

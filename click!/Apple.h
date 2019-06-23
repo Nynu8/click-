@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "Upgrade.h"
 
 class Apple
@@ -7,8 +8,10 @@ class Apple
 public:
 	void AddApples(int64_t);
 	void AddUpgrade(Upgrade);
+	void AddLoadUpgrade(Upgrade, std::string, int);
 	uint64_t GetAppleCount() const;
 	float GetApplesPerSecond() const;
+	void SetAppleCount(uint64_t);
 
 private:
 	uint64_t m_appleCount = 0;
@@ -17,6 +20,7 @@ private:
 	void CalculateApplesPerSecond();
 };
 
+inline void Apple::SetAppleCount(uint64_t count) { this->m_appleCount = count; };
 inline void Apple::AddApples(int64_t x) { this->m_appleCount += x; }
 inline uint64_t Apple::GetAppleCount() const { return this->m_appleCount; }
 inline float Apple::GetApplesPerSecond() const { return this->m_currentApplesPerSecond; }
