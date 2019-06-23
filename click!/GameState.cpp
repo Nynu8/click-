@@ -28,6 +28,7 @@ GameState::GameState(StateManager* _stateManager)
 	makeCookieAmount(windowSize);
 	makeUpgrades(windowSize);
 	makeInstruction(windowSize);
+	makeStats(windowSize);
 	makeTextUpgrades(windowSize, upgrade1Text);
 	makeTextUpgrades(windowSize, upgrade2Text);
 	makeTextUpgrades(windowSize, upgrade3Text);
@@ -44,7 +45,7 @@ GameState::GameState(StateManager* _stateManager)
 	upgradePosition3 = upgrade3.getPosition();
 
 	//set upgrades
-	this->m_upgrades.push_back({ std::string("MOC"), 1, 15, UpgradeType::Click });
+	this->m_upgrades.push_back({ std::string("MOC"), 1, 30, UpgradeType::Click });
 	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 2, 100, UpgradeType::ApplesPerSecond });
 	this->m_upgrades.push_back({ std::string("OGIEN"), 5, 1000, UpgradeType::ApplesPerSecond });
 	//load save
@@ -171,6 +172,17 @@ void GameState::makeInstruction(sf::Vector2u windowSize)
 	instruction.setFillColor(sf::Color(255, 255, 255, 160));
 }
 
+void GameState::makeStats(sf::Vector2u windowSize)
+{
+	const sf::Font *font = m_pResourceManager->GetFont("ubuntu");
+	stats.setFont(*font);
+	stats.setCharacterSize(30);
+	stats.setStyle(sf::Text::Bold);
+
+	stats.setPosition(10, windowSize.y / 2 -100);
+	stats.setFillColor(sf::Color(255, 255, 255, 160));
+}
+
 void GameState::makeTextUpgrades(sf::Vector2u windowSize, sf::Text& upgrade)
 {
 	const sf::Font *font = m_pResourceManager->GetFont("HandVetica");
@@ -253,6 +265,13 @@ void GameState::drawUpgradesCost(sf::RenderWindow *window)
 	window->draw(upgrade3Cost);
 }
 
+void GameState::drawStats(sf::RenderWindow* window)
+{
+	std::string statsText="Czas gry: \n"+makeTimeString(timeElapsed)+"\n\nPunkty na sekunde: \n"+std::to_string(this->m_pApple->GetApplesPerSecond());
+	stats.setString(statsText);
+	window->draw(stats);
+}
+
 void GameState::drawAll(sf::RenderWindow* window)
 {
 	window->clear();
@@ -269,6 +288,7 @@ void GameState::drawAll(sf::RenderWindow* window)
 	window->draw(upgrade1Name);
 	window->draw(upgrade2Name);
 	window->draw(upgrade3Name);
+	drawStats(window);
 	drawUpgradesCost(window);
 	window->display();
 }

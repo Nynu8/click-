@@ -1,12 +1,7 @@
 #include "ResourceManager.h"
 
 ResourceManager::ResourceManager()
-{
-	//Default font 
-	sf::Font* defFont = new sf::Font();
-	if (defFont->loadFromFile("./assets/arial.TTF"))
-		m_fonts["Arial"] = defFont;
-	
+{	
 	//pointer font
 	sf::Font* poiFont = new sf::Font();
 	if (poiFont->loadFromFile("./assets/HandVetica.ttf"))

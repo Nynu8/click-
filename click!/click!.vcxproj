@@ -149,7 +149,6 @@
     <Image Include="assets\wood.png" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="assets\arial.TTF" />
     <Font Include="assets\HandVetica.ttf" />
     <Font Include="assets\ubuntu.ttf" />
   </ItemGroup>
