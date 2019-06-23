@@ -18,7 +18,7 @@ int main()
 	stateManager.TransitionTo<GameState>();
 	UpdateContext kContext;
 	kContext.m_pWindow = &window;
-
+	window.setKeyRepeatEnabled(false);
 	while (window.isOpen())
 	{
 		kContext.m_deltaTime = clock.getElapsedTime().asSeconds();

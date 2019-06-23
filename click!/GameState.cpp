@@ -50,6 +50,7 @@ GameState::GameState(StateManager* _stateManager)
 	this->m_upgrades.push_back({ std::string("OGIEN"), 5, 1000, UpgradeType::ApplesPerSecond });
 	//load save
 	load();
+
 }
 
 void GameState::Update(UpdateContext updateContext)
@@ -62,6 +63,10 @@ void GameState::Update(UpdateContext updateContext)
 			//tu bedziemy zapisywac stan gry
 			save();
 			updateContext.m_pWindow->close();
+		}
+
+		if (event.type==sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
+			this->m_pApple->AddApples(1 + this->m_pApple->GetApplesPerClick());
 		}
 
 		if (event.type == sf::Event::MouseButtonPressed)
