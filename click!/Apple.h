@@ -18,7 +18,7 @@ private:
 	uint64_t m_appleCount = 0;
 	float m_currentApplesPerSecond = 0;
 	uint64_t m_currentApplesPerClick = 0;
-	std::vector<Upgrade> m_pUpgrades;
+	std::vector<Upgrade> m_upgrades;
 	void CalculateUpgradeEffects();
 };
 
