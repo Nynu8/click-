@@ -379,7 +379,6 @@ void GameState::load()
 	if (file.good()&&!file.eof()) {
 		json data;
 		file >> data;
-		std::cout << data[1][1];
 		this->m_upgrades.at(0).SetUpgradeLevel(data[0][1]);
 		this->m_pApple->AddUpgrade(this->m_upgrades.at(0));
 
