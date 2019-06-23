@@ -36,9 +36,4 @@ ResourceManager::ResourceManager()
 	if (background->loadFromFile("./assets/wood.jpg"))
 		m_textures["wood"] = background;
 	m_textures["wood"]->setRepeated(true);
-/*
-	sf::Sprite appleTsprite; 
-	appleTsprite.setTexture(appleTtexture);*/
-
-	
 }

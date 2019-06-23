@@ -13,33 +13,6 @@ public:
 	GameState(StateManager* stateManager);
 	void Update(UpdateContext updateContext) override;
 
-	void makeLogo(sf::Vector2u);
-	void makeAppleTree(sf::Vector2u);
-	void makeCookieAmount(sf::Vector2u);
-	void makeUpgrades(sf::Vector2u);
-	void makeInstruction(sf::Vector2u);
-	void makeStats(sf::Vector2u);
-	void makeTextUpgrades(sf::Vector2u, sf::Text&);
-	void makeUpgradesName(sf::Text&);
-	//void makeUpgradesCost(sf::Text&);
-
-	void setUpgradesName();
-
-	void drawCookieAmount(sf::RenderWindow* , uint64_t);
-	void drawUpgradesAmount(sf::RenderWindow*);
-	void drawUpgradesCost(sf::RenderWindow*);
-	void drawStats(sf::RenderWindow*);
-	void drawAll(sf::RenderWindow*);
-
-	void hoverAppleTree(UpdateContext);
-	void hoverUpgrade(UpdateContext, sf::Sprite &);
-	void onclickUpgrade(UpdateContext, sf::Sprite &, sf::Vector2f);
-	bool isSpriteHover(sf::Sprite, sf::Vector2i);
-	void activeUpgrade(sf::Sprite&, sf::Vector2f);
-	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
-	void disableUpgrade(UpdateContext, sf::Sprite &, sf::Text&, sf::Vector2f, bool);
-
-
 private:
 	StateManager* m_pStateManager;
 	Apple* m_pApple;
@@ -51,8 +24,6 @@ private:
 	sf::Vector2f upgradePosition1;
 	sf::Vector2f upgradePosition2;
 	sf::Vector2f upgradePosition3;
-
-	//std::map<std::string, sf::Sprite*> m_sprite; nienawidze map
 	
 	sf::Sprite logo; 
 	sf::Sprite appleTreeSprite;
@@ -80,9 +51,32 @@ private:
 
 	sf::Image icon;
 
-	void disableUpgrades(UpdateContext);
-
 	void save();
 	void load();
 	std::string makeTimeString(double);
+	void disableUpgrades(UpdateContext);
+	void makeLogo(sf::Vector2u);
+	void makeAppleTree(sf::Vector2u);
+	void makeCookieAmount(sf::Vector2u);
+	void makeUpgrades(sf::Vector2u);
+	void makeInstruction(sf::Vector2u);
+	void makeStats(sf::Vector2u);
+	void makeTextUpgrades(sf::Vector2u, sf::Text&);
+	void makeUpgradesName(sf::Text&);
+
+	void setUpgradesName();
+
+	void drawCookieAmount(sf::RenderWindow*, uint64_t);
+	void drawUpgradesAmount(sf::RenderWindow*);
+	void drawUpgradesCost(sf::RenderWindow*);
+	void drawStats(sf::RenderWindow*);
+	void drawAll(sf::RenderWindow*);
+
+	void hoverAppleTree(UpdateContext);
+	void hoverUpgrade(UpdateContext, sf::Sprite &);
+	void onclickUpgrade(UpdateContext, sf::Sprite &, sf::Vector2f);
+	bool isSpriteHover(sf::Sprite, sf::Vector2i);
+	void activeUpgrade(sf::Sprite&, sf::Vector2f);
+	void unactiveUpgrade(sf::Sprite&, sf::Vector2f);
+	void disableUpgrade(UpdateContext, sf::Sprite &, sf::Text&, sf::Vector2f, bool);
 };

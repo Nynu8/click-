@@ -8,7 +8,6 @@ class Apple
 public:
 	void AddApples(int64_t);
 	void AddUpgrade(Upgrade);
-	void AddLoadUpgrade(Upgrade, std::string, int);
 	uint64_t GetAppleCount() const;
 	float GetApplesPerSecond() const;
 	uint64_t GetApplesPerClick() const;

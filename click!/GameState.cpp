@@ -1,15 +1,13 @@
 #include <SFML/Graphics.hpp>
-#include "GameState.h"
-#include "UpgradeType.h"
 #include <fstream>
 #include <sstream>
 #include <iomanip>
+
+#include "GameState.h"
+#include "UpgradeType.h"
 #include "json.h"
 
 using json = nlohmann::json;
-
-//tmp
-#include <iostream>
 
 GameState::GameState(StateManager* _stateManager)
 {
@@ -45,9 +43,9 @@ GameState::GameState(StateManager* _stateManager)
 	upgradePosition3 = upgrade3.getPosition();
 
 	//set upgrades
-	this->m_upgrades.push_back({ std::string("MOC"), 1, 30, UpgradeType::Click });
-	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 2, 100, UpgradeType::ApplesPerSecond });
-	this->m_upgrades.push_back({ std::string("OGIEN"), 5, 1000, UpgradeType::ApplesPerSecond });
+	this->m_upgrades.push_back({ std::string("MOC"), 1, 50, UpgradeType::Click });
+	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 3, 100, UpgradeType::ApplesPerSecond });
+	this->m_upgrades.push_back({ std::string("OGIEN"), 15, 1000, UpgradeType::ApplesPerSecond });
 	//load save
 	load();
 
@@ -60,7 +58,6 @@ void GameState::Update(UpdateContext updateContext)
 	{
 		if (event.type == sf::Event::Closed)
 		{
-			//tu bedziemy zapisywac stan gry
 			save();
 			updateContext.m_pWindow->close();
 		}
@@ -243,7 +240,7 @@ void GameState::drawUpgradesAmount(sf::RenderWindow *window)
 	unsigned int charactersSize3 = upgrade3Text.getLocalBounds().width;
 
 	unsigned int charactersSize = textPoints.getLocalBounds().width;
-	//+250 - characterSize* amount 
+
 	upgrade1Text.setPosition(upgrade1.getPosition().x + 250 - charactersSize1, upgrade1.getPosition().y + 10);
 	upgrade2Text.setPosition(upgrade2.getPosition().x + 250 - charactersSize2, upgrade2.getPosition().y + 10);
 	upgrade3Text.setPosition(upgrade3.getPosition().x + 250 - charactersSize3, upgrade3.getPosition().y + 10);
@@ -261,7 +258,7 @@ void GameState::drawUpgradesCost(sf::RenderWindow *window)
 	unsigned int charactersSize1 = upgrade1Cost.getLocalBounds().width;
 	unsigned int charactersSize2 = upgrade2Cost.getLocalBounds().width;
 	unsigned int charactersSize3 = upgrade3Cost.getLocalBounds().width;
-	//+250 - characterSize* amount 
+
 	upgrade1Cost.setPosition(upgrade1.getPosition().x + 250 - charactersSize1, upgrade1.getPosition().y + 60);
 	upgrade2Cost.setPosition(upgrade2.getPosition().x + 250 - charactersSize2, upgrade2.getPosition().y + 60);
 	upgrade3Cost.setPosition(upgrade3.getPosition().x + 250 - charactersSize3, upgrade3.getPosition().y + 60);
