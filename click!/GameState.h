@@ -18,6 +18,7 @@ public:
 	void makeCookieAmount(sf::Vector2u);
 	void makeUpgrades(sf::Vector2u);
 	void makeInstruction(sf::Vector2u);
+	void makeStats(sf::Vector2u);
 	void makeTextUpgrades(sf::Vector2u, sf::Text&);
 	void makeUpgradesName(sf::Text&);
 	//void makeUpgradesCost(sf::Text&);
@@ -27,6 +28,7 @@ public:
 	void drawCookieAmount(sf::RenderWindow* , uint64_t);
 	void drawUpgradesAmount(sf::RenderWindow*);
 	void drawUpgradesCost(sf::RenderWindow*);
+	void drawStats(sf::RenderWindow*);
 	void drawAll(sf::RenderWindow*);
 
 	void hoverAppleTree(UpdateContext);
@@ -74,6 +76,7 @@ private:
 
 	sf::Text textPoints;
 	sf::Text instruction;
+	sf::Text stats;
 
 	sf::Image icon;
 

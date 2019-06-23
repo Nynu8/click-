@@ -84,9 +84,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="assets\arial.TTF">
-      <Filter>Resource Files</Filter>
-    </Font>
     <Font Include="assets\HandVetica.ttf">
       <Filter>Resource Files</Filter>
     </Font>
