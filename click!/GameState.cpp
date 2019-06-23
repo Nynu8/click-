@@ -80,7 +80,7 @@ void GameState::Update(UpdateContext updateContext)
 				if (isSpriteHover(this->upgrade1, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
 					if (this->m_upgrades.at(0).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
 						this->m_pApple->AddApples(this->m_upgrades.at(0).GetUpgradeCost()*-1);
-						this->m_upgrades.at(0).AddUpgradeLevel(1);
+						this->m_upgrades.at(0).AddUpgradeLevel();
 						this->m_pApple->AddUpgrade(this->m_upgrades.at(0));
 					}
 				}
@@ -88,7 +88,7 @@ void GameState::Update(UpdateContext updateContext)
 				if (isSpriteHover(this->upgrade2, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
 					if (this->m_upgrades.at(1).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
 						this->m_pApple->AddApples(this->m_upgrades.at(1).GetUpgradeCost()*-1);
-						this->m_upgrades.at(1).AddUpgradeLevel(1);
+						this->m_upgrades.at(1).AddUpgradeLevel();
 						this->m_pApple->AddUpgrade(this->m_upgrades.at(1));
 					}
 				}
@@ -96,7 +96,7 @@ void GameState::Update(UpdateContext updateContext)
 				if (isSpriteHover(this->upgrade3, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
 					if (this->m_upgrades.at(2).GetUpgradeCost() <= this->m_pApple->GetAppleCount()) {
 						this->m_pApple->AddApples(this->m_upgrades.at(2).GetUpgradeCost()*-1);
-						this->m_upgrades.at(2).AddUpgradeLevel(1);
+						this->m_upgrades.at(2).AddUpgradeLevel();
 						this->m_pApple->AddUpgrade(this->m_upgrades.at(2));
 					}
 				}
@@ -383,18 +383,17 @@ void GameState::load()
 		json data;
 		file >> data;
 		std::cout << data[1][1];
-		this->m_upgrades.at(0).AddUpgradeLevel(data[0][1]);
-		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[0][0], data[0][1]);
+		this->m_upgrades.at(0).SetUpgradeLevel(data[0][1]);
+		this->m_pApple->AddUpgrade(this->m_upgrades.at(0));
 
-		this->m_upgrades.at(1).AddUpgradeLevel(data[1][1]);
-		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(1), data[1][0], data[1][1]);
+		this->m_upgrades.at(1).SetUpgradeLevel(data[1][1]);
+		this->m_pApple->AddUpgrade(this->m_upgrades.at(1));
 		
-		this->m_upgrades.at(2).AddUpgradeLevel(data[2][1]);
-		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(2), data[2][0], data[2][1]);
+		this->m_upgrades.at(2).SetUpgradeLevel(data[2][1]);
+		this->m_pApple->AddUpgrade(this->m_upgrades.at(2));
 		
 		this->m_pApple->SetAppleCount(data[3]);
 		this->timeElapsed = data[4];
-
 	}
 }
 
