@@ -44,6 +44,7 @@ private:
 	ResourceManager* m_pResourceManager;
 	std::vector<Upgrade> m_upgrades;
 	double applesToAdd = 0;		//how many apples to add in each game loop from upgrades
+	double timeElapsed = 0;		//game time
 
 	sf::Vector2f upgradePosition1;
 	sf::Vector2f upgradePosition2;
@@ -80,4 +81,5 @@ private:
 
 	void save();
 	void load();
+	std::string makeTimeString(double);
 };

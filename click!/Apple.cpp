@@ -1,13 +1,21 @@
 #include "Apple.h"
 
-void Apple::CalculateApplesPerSecond()
+void Apple::CalculateUpgradeEffects()
 {
 	double applesPerSecond = 0;
+	int applesPerClick = 0;
 	for (std::vector<Upgrade>::iterator it = m_pUpgrades.begin(); it != m_pUpgrades.end(); ++it) {
-		applesPerSecond += it->GetApplesPerSecond();
+		if (it->GetUpgradeType() == UpgradeType::ApplesPerSecond) {
+			applesPerSecond += it->GetUpgradeEffect();
+		}
+
+		if (it->GetUpgradeType() == UpgradeType::Click) {
+			applesPerClick += it->GetUpgradeEffect();
+		}
 	}
 
 	this->m_currentApplesPerSecond = applesPerSecond;
+	this->m_currentApplesPerClick = applesPerClick;
 }
 
 void Apple::AddUpgrade(Upgrade upgrade)
@@ -24,7 +32,7 @@ void Apple::AddUpgrade(Upgrade upgrade)
 		this->m_pUpgrades.push_back(upgrade);
 	}
 
-	this->CalculateApplesPerSecond();
+	this->CalculateUpgradeEffects();
 }
 
 void Apple::AddLoadUpgrade(Upgrade upgrade, std::string name, int lvl)
@@ -41,5 +49,5 @@ void Apple::AddLoadUpgrade(Upgrade upgrade, std::string name, int lvl)
 		this->m_pUpgrades.push_back(upgrade);
 	}
 
-	this->CalculateApplesPerSecond();
+	this->CalculateUpgradeEffects();
 }

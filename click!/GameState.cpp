@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.h"
+#include "UpgradeType.h"
 #include <fstream>
+#include <sstream>
+#include <iomanip>
 #include "json.h"
 
 using json = nlohmann::json;
@@ -41,9 +44,9 @@ GameState::GameState(StateManager* _stateManager)
 	upgradePosition3 = upgrade3.getPosition();
 
 	//set upgrades
-	this->m_upgrades.push_back({ std::string("MOC"), 1, 15 });
-	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 3, 100 });
-	this->m_upgrades.push_back({ std::string("OGIEN"), 6, 1000 });
+	this->m_upgrades.push_back({ std::string("MOC"), 1, 15, UpgradeType::Click });
+	this->m_upgrades.push_back({ std::string("SZYBKOSC"), 2, 100, UpgradeType::ApplesPerSecond });
+	this->m_upgrades.push_back({ std::string("OGIEN"), 5, 1000, UpgradeType::ApplesPerSecond });
 	//load save
 	load();
 }
@@ -65,7 +68,7 @@ void GameState::Update(UpdateContext updateContext)
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
 				if (isSpriteHover(this->appleTreeSprite, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
-					this->m_pApple->AddApples(1);
+					this->m_pApple->AddApples(1 + this->m_pApple->GetApplesPerClick());
 				}
 
 				if (isSpriteHover(this->upgrade1, sf::Mouse::getPosition(*updateContext.m_pWindow))) {
@@ -95,6 +98,7 @@ void GameState::Update(UpdateContext updateContext)
 		}
 	}
 
+	timeElapsed += updateContext.m_deltaTime;
 	applesToAdd += updateContext.m_deltaTime * m_pApple->GetApplesPerSecond();
 	if (applesToAdd > 1) {
 		int tmpApples = (int)applesToAdd;
@@ -336,11 +340,13 @@ void GameState::disableUpgrades(UpdateContext updateContext)
 void GameState::save()
 {
 	json data;
-	for (int i = 0; i < 3; i++) {
-		json upgrade={ this->m_upgrades.at(i).GetName(), this->m_upgrades.at(i).GetUpgradeLevel() };
+	for (std::vector<Upgrade>::iterator it = this->m_upgrades.begin(); it != this->m_upgrades.end(); ++it) {
+		json upgrade={ it->GetName(), it->GetUpgradeLevel() };
 		data += upgrade;
 	}
+
 	data += this->m_pApple->GetAppleCount();
+	data += this->timeElapsed;
 	std::ofstream file("data.json");
 	file << data;
 }
@@ -362,5 +368,19 @@ void GameState::load()
 		this->m_pApple->AddLoadUpgrade(this->m_upgrades.at(0), data[2][0], data[2][1]);
 		
 		this->m_pApple->SetAppleCount(data[3]);
+		this->timeElapsed = data[4];
 	}
+}
+
+std::string GameState::makeTimeString(double time)
+{
+	int hours = time / 3600;
+	int minutes = (time - hours*3600) / 60;
+	int seconds = (int)time % 60;
+
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(2) << hours << ":";
+	ss << std::setfill('0') << std::setw(2) << minutes << ":";
+	ss << std::setfill('0') << std::setw(2) << seconds;
+	return ss.str();
 }

@@ -126,6 +126,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
+    <ClCompile Include="Upgrade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Apple.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="StateManager.h" />
     <ClInclude Include="UpdateContext.h" />
     <ClInclude Include="Upgrade.h" />
+    <ClInclude Include="UpgradeType.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\apple.png" />
