@@ -27,6 +27,5 @@ int main()
 		stateManager.Update(kContext);
 	}
 
-	system("pause"); 
 	return 0;
 }
