@@ -23,7 +23,7 @@ GameState::GameState(StateManager* _stateManager)
 
 	makeLogo(windowSize);
 	makeAppleTree(windowSize);
-	makeCookieAmount(windowSize);
+	makeAppleAmount(windowSize);
 	makeUpgrades(windowSize);
 	makeInstruction(windowSize);
 	makeStats(windowSize);
@@ -132,7 +132,7 @@ void GameState::makeAppleTree(sf::Vector2u windowSize)
 	this->appleTreeSprite = appleTextureSprite;
 }
 
-void GameState::makeCookieAmount(sf::Vector2u)
+void GameState::makeAppleAmount(sf::Vector2u)
 {
 	const sf::Font *font = m_pResourceManager->GetFont("HandVetica");
 	textPoints.setFont(*font);

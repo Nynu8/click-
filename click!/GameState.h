@@ -57,7 +57,7 @@ private:
 	void disableUpgrades(UpdateContext);
 	void makeLogo(sf::Vector2u);
 	void makeAppleTree(sf::Vector2u);
-	void makeCookieAmount(sf::Vector2u);
+	void makeAppleAmount(sf::Vector2u);
 	void makeUpgrades(sf::Vector2u);
 	void makeInstruction(sf::Vector2u);
 	void makeStats(sf::Vector2u);
